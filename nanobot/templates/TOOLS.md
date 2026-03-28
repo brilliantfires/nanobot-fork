@@ -1,15 +1,15 @@
-# Tool Usage Notes
+# 工具使用说明
 
-Tool signatures are provided automatically via function calling.
-This file documents non-obvious constraints and usage patterns.
+工具签名会通过函数调用自动提供。
+这个文件记录那些不明显的约束和使用模式。
 
-## exec — Safety Limits
+## exec — 安全限制
 
-- Commands have a configurable timeout (default 60s)
-- Dangerous commands are blocked (rm -rf, format, dd, shutdown, etc.)
-- Output is truncated at 10,000 characters
-- `restrictToWorkspace` config can limit file access to the workspace
+- 命令有可配置超时（默认 60 秒）
+- 危险命令会被拦截（`rm -rf`、格式化、`dd`、关机等）
+- 输出会在 10,000 个字符处截断
+- `restrictToWorkspace` 配置可以把文件访问限制在工作区内
 
-## cron — Scheduled Reminders
+## cron — 定时提醒
 
-- Please refer to cron skill for usage.
+- 用法请参考 cron 技能。

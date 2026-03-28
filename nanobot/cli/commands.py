@@ -2,10 +2,10 @@
 
 import asyncio
 from contextlib import contextmanager, nullcontext
-
 import os
 import select
 import signal
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -47,6 +47,10 @@ app = typer.Typer(
 
 console = Console()
 EXIT_COMMANDS = {"exit", "quit", "/exit", "/quit", ":q"}
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_GATEWAY_LOG_DIR = _PROJECT_ROOT / "logs" / "gateway"
+_GATEWAY_LOG_FILE = _GATEWAY_LOG_DIR / "gateway.log"
+_GATEWAY_PID_FILE = _GATEWAY_LOG_DIR / "gateway.pid"
 
 # ---------------------------------------------------------------------------
 # CLI input: prompt_toolkit for editing, paste, history, and display
@@ -119,6 +123,224 @@ def _init_prompt_session() -> None:
 
 def _make_console() -> Console:
     return Console(file=sys.stdout)
+
+
+def _gateway_pid() -> int | None:
+    if not _GATEWAY_PID_FILE.exists():
+        return None
+    raw = _GATEWAY_PID_FILE.read_text(encoding="utf-8").strip()
+    return int(raw) if raw else None
+
+
+def _is_process_running(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def _configure_gateway_logging(verbose: bool) -> None:
+    import logging
+    from loguru import logger
+
+    _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+    log_level = "DEBUG" if verbose else "INFO"
+    logger.remove()
+    logger.add(
+        _GATEWAY_LOG_FILE,
+        level=log_level,
+        encoding="utf-8",
+        enqueue=True,
+    )
+
+    root_logger = logging.getLogger()
+    root_logger.handlers.clear()
+    root_logger.setLevel(logging.DEBUG if verbose else logging.INFO)
+    root_logger.addHandler(logging.StreamHandler(sys.stderr))
+
+
+def _run_gateway_service(
+    port: int | None,
+    workspace: str | None,
+    verbose: bool,
+    config: str | None,
+) -> None:
+    """Run the gateway service in the current process."""
+    from nanobot.agent.loop import AgentLoop
+    from nanobot.bus.queue import MessageBus
+    from nanobot.channels.manager import ChannelManager
+    from nanobot.config.paths import get_cron_dir
+    from nanobot.cron.service import CronService
+    from nanobot.cron.types import CronJob
+    from nanobot.heartbeat.service import HeartbeatService
+    from nanobot.session.manager import SessionManager
+
+    config = _load_runtime_config(config, workspace)
+    port = port if port is not None else config.gateway.port
+
+    _configure_gateway_logging(verbose)
+
+    console.print(f"{__logo__} Starting nanobot gateway version {__version__} on port {port}...")
+    sync_workspace_templates(config.workspace_path)
+    bus = MessageBus()
+    provider = _make_provider(config)
+    session_manager = SessionManager(config.workspace_path)
+
+    cron_store_path = get_cron_dir() / "jobs.json"
+    cron = CronService(cron_store_path)
+
+    agent = AgentLoop(
+        bus=bus,
+        provider=provider,
+        workspace=config.workspace_path,
+        model=config.agents.defaults.model,
+        max_iterations=config.agents.defaults.max_tool_iterations,
+        context_window_tokens=config.agents.defaults.context_window_tokens,
+        web_search_config=config.tools.web.search,
+        web_proxy=config.tools.web.proxy or None,
+        exec_config=config.tools.exec,
+        cron_service=cron,
+        restrict_to_workspace=config.tools.restrict_to_workspace,
+        session_manager=session_manager,
+        mcp_servers=config.tools.mcp_servers,
+        channels_config=config.channels,
+    )
+
+    async def on_cron_job(job: CronJob) -> str | None:
+        """Execute a cron job through the agent."""
+        from nanobot.agent.tools.cron import CronTool
+        from nanobot.agent.tools.message import MessageTool
+        from nanobot.utils.evaluator import evaluate_response
+
+        reminder_note = (
+            "[Scheduled Task] Timer finished.\n\n"
+            f"Task '{job.name}' has been triggered.\n"
+            f"Scheduled instruction: {job.payload.message}"
+        )
+
+        cron_tool = agent.tools.get("cron")
+        cron_token = None
+        if isinstance(cron_tool, CronTool):
+            cron_token = cron_tool.set_cron_context(True)
+        try:
+            resp = await agent.process_direct(
+                reminder_note,
+                session_key=f"cron:{job.id}",
+                channel=job.payload.channel or "cli",
+                chat_id=job.payload.to or "direct",
+            )
+        finally:
+            if isinstance(cron_tool, CronTool) and cron_token is not None:
+                cron_tool.reset_cron_context(cron_token)
+
+        response = resp.content if resp else ""
+
+        message_tool = agent.tools.get("message")
+        if isinstance(message_tool, MessageTool) and message_tool._sent_in_turn:
+            return response
+
+        if job.payload.deliver and job.payload.to and response:
+            should_notify = await evaluate_response(
+                response, job.payload.message, provider, agent.model,
+            )
+            if should_notify:
+                from nanobot.bus.events import OutboundMessage
+                await bus.publish_outbound(OutboundMessage(
+                    channel=job.payload.channel or "cli",
+                    chat_id=job.payload.to,
+                    content=response,
+                ))
+        return response
+    cron.on_job = on_cron_job
+
+    channels = ChannelManager(config, bus)
+
+    def _pick_heartbeat_target() -> tuple[str, str]:
+        """Pick a routable channel/chat target for heartbeat-triggered messages."""
+        enabled = set(channels.enabled_channels)
+        for item in session_manager.list_sessions():
+            key = item.get("key") or ""
+            if ":" not in key:
+                continue
+            channel, chat_id = key.split(":", 1)
+            if channel in {"cli", "system"}:
+                continue
+            if channel in enabled and chat_id:
+                return channel, chat_id
+        return "cli", "direct"
+
+    async def on_heartbeat_execute(tasks: str) -> str:
+        """Phase 2: execute heartbeat tasks through the full agent loop."""
+        channel, chat_id = _pick_heartbeat_target()
+
+        async def _silent(*_args, **_kwargs):
+            pass
+
+        resp = await agent.process_direct(
+            tasks,
+            session_key="heartbeat",
+            channel=channel,
+            chat_id=chat_id,
+            on_progress=_silent,
+        )
+        return resp.content if resp else ""
+
+    async def on_heartbeat_notify(response: str) -> None:
+        """Deliver a heartbeat response to the user's channel."""
+        from nanobot.bus.events import OutboundMessage
+        channel, chat_id = _pick_heartbeat_target()
+        if channel == "cli":
+            return
+        await bus.publish_outbound(OutboundMessage(channel=channel, chat_id=chat_id, content=response))
+
+    hb_cfg = config.gateway.heartbeat
+    heartbeat = HeartbeatService(
+        workspace=config.workspace_path,
+        provider=provider,
+        model=agent.model,
+        on_execute=on_heartbeat_execute,
+        on_notify=on_heartbeat_notify,
+        interval_s=hb_cfg.interval_s,
+        enabled=hb_cfg.enabled,
+    )
+
+    if channels.enabled_channels:
+        console.print(f"[green]✓[/green] Channels enabled: {', '.join(channels.enabled_channels)}")
+    else:
+        console.print("[yellow]Warning: No channels enabled[/yellow]")
+
+    cron_status = cron.status()
+    if cron_status["jobs"] > 0:
+        console.print(f"[green]✓[/green] Cron: {cron_status['jobs']} scheduled jobs")
+
+    console.print(f"[green]✓[/green] Heartbeat: every {hb_cfg.interval_s}s")
+
+    async def run():
+        try:
+            await cron.start()
+            await heartbeat.start()
+            await asyncio.gather(
+                agent.run(),
+                channels.start_all(),
+            )
+        except KeyboardInterrupt:
+            console.print("\nShutting down...")
+        except Exception:
+            import traceback
+            console.print("\n[red]Error: Gateway crashed unexpectedly[/red]")
+            console.print(traceback.format_exc())
+        finally:
+            await agent.close_mcp()
+            heartbeat.stop()
+            cron.stop()
+            agent.stop()
+            await channels.stop_all()
+
+    asyncio.run(run())
 
 
 def _render_interactive_ansi(render_fn) -> str:
@@ -320,7 +542,7 @@ def onboard(
     sync_workspace_templates(workspace_path)
 
     agent_cmd = 'nanobot agent -m "Hello!"'
-    gateway_cmd = "nanobot gateway"
+    gateway_cmd = "nanobot gateway start"
     if config:
         agent_cmd += f" --config {config_path}"
         gateway_cmd += f" --config {config_path}"
@@ -477,194 +699,94 @@ def _warn_deprecated_config_keys(config_path: Path | None) -> None:
 # ============================================================================
 
 
-@app.command()
-def gateway(
+gateway_app = typer.Typer(help="Manage gateway", no_args_is_help=True)
+app.add_typer(gateway_app, name="gateway")
+
+
+@gateway_app.command("start")
+def gateway_start(
     port: int | None = typer.Option(None, "--port", "-p", help="Gateway port"),
     workspace: str | None = typer.Option(None, "--workspace", "-w", help="Workspace directory"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
     config: str | None = typer.Option(None, "--config", "-c", help="Path to config file"),
 ):
-    """Start the nanobot gateway."""
-    from nanobot.agent.loop import AgentLoop
-    from nanobot.bus.queue import MessageBus
-    from nanobot.channels.manager import ChannelManager
-    from nanobot.config.paths import get_cron_dir
-    from nanobot.cron.service import CronService
-    from nanobot.cron.types import CronJob
-    from nanobot.heartbeat.service import HeartbeatService
-    from nanobot.session.manager import SessionManager
+    """Start the nanobot gateway in the background."""
+    _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-    if verbose:
-        import logging
-        logging.basicConfig(level=logging.DEBUG)
+    pid = _gateway_pid()
+    if pid is not None and _is_process_running(pid):
+        console.print(f"[yellow]Gateway is already running (PID {pid})[/yellow]")
+        raise typer.Exit(1)
 
-    config = _load_runtime_config(config, workspace)
-    port = port if port is not None else config.gateway.port
+    with _GATEWAY_LOG_FILE.open("a", encoding="utf-8") as log_fp:
+        cmd = [
+            sys.executable,
+            "-m",
+            "nanobot",
+            "gateway",
+            "run",
+        ]
+        if port is not None:
+            cmd.extend(["--port", str(port)])
+        if workspace is not None:
+            cmd.extend(["--workspace", workspace])
+        if verbose:
+            cmd.append("--verbose")
+        if config is not None:
+            cmd.extend(["--config", config])
 
-    console.print(f"{__logo__} Starting nanobot gateway version {__version__} on port {port}...")
-    sync_workspace_templates(config.workspace_path)
-    bus = MessageBus()
-    provider = _make_provider(config)
-    session_manager = SessionManager(config.workspace_path)
-
-    # Create cron service first (callback set after agent creation)
-    cron_store_path = get_cron_dir() / "jobs.json"
-    cron = CronService(cron_store_path)
-
-    # Create agent with cron service
-    agent = AgentLoop(
-        bus=bus,
-        provider=provider,
-        workspace=config.workspace_path,
-        model=config.agents.defaults.model,
-        max_iterations=config.agents.defaults.max_tool_iterations,
-        context_window_tokens=config.agents.defaults.context_window_tokens,
-        web_search_config=config.tools.web.search,
-        web_proxy=config.tools.web.proxy or None,
-        exec_config=config.tools.exec,
-        cron_service=cron,
-        restrict_to_workspace=config.tools.restrict_to_workspace,
-        session_manager=session_manager,
-        mcp_servers=config.tools.mcp_servers,
-        channels_config=config.channels,
-    )
-
-    # Set cron callback (needs agent)
-    async def on_cron_job(job: CronJob) -> str | None:
-        """Execute a cron job through the agent."""
-        from nanobot.agent.tools.cron import CronTool
-        from nanobot.agent.tools.message import MessageTool
-        from nanobot.utils.evaluator import evaluate_response
-
-        reminder_note = (
-            "[Scheduled Task] Timer finished.\n\n"
-            f"Task '{job.name}' has been triggered.\n"
-            f"Scheduled instruction: {job.payload.message}"
+        proc = subprocess.Popen(
+            cmd,
+            stdin=subprocess.DEVNULL,
+            stdout=log_fp,
+            stderr=log_fp,
+            start_new_session=True,
+            cwd=str(_PROJECT_ROOT),
         )
 
-        cron_tool = agent.tools.get("cron")
-        cron_token = None
-        if isinstance(cron_tool, CronTool):
-            cron_token = cron_tool.set_cron_context(True)
-        try:
-            resp = await agent.process_direct(
-                reminder_note,
-                session_key=f"cron:{job.id}",
-                channel=job.payload.channel or "cli",
-                chat_id=job.payload.to or "direct",
-            )
-        finally:
-            if isinstance(cron_tool, CronTool) and cron_token is not None:
-                cron_tool.reset_cron_context(cron_token)
+    console.print(f"[green]Gateway started[/green] (PID {proc.pid})")
+    console.print(f"[dim]Log: {_GATEWAY_LOG_FILE}[/dim]")
 
-        response = resp.content if resp else ""
 
-        message_tool = agent.tools.get("message")
-        if isinstance(message_tool, MessageTool) and message_tool._sent_in_turn:
-            return response
+@gateway_app.command("run", hidden=True)
+def gateway_run(
+    port: int | None = typer.Option(None, "--port", "-p", help="Gateway port"),
+    workspace: str | None = typer.Option(None, "--workspace", "-w", help="Workspace directory"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
+    config: str | None = typer.Option(None, "--config", "-c", help="Path to config file"),
+):
+    """Run the nanobot gateway in the current process."""
+    _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    _GATEWAY_PID_FILE.write_text(str(os.getpid()), encoding="utf-8")
+    try:
+        _run_gateway_service(port=port, workspace=workspace, verbose=verbose, config=config)
+    finally:
+        if _GATEWAY_PID_FILE.exists():
+            _GATEWAY_PID_FILE.unlink()
 
-        if job.payload.deliver and job.payload.to and response:
-            should_notify = await evaluate_response(
-                response, job.payload.message, provider, agent.model,
-            )
-            if should_notify:
-                from nanobot.bus.events import OutboundMessage
-                await bus.publish_outbound(OutboundMessage(
-                    channel=job.payload.channel or "cli",
-                    chat_id=job.payload.to,
-                    content=response,
-                ))
-        return response
-    cron.on_job = on_cron_job
 
-    # Create channel manager
-    channels = ChannelManager(config, bus)
+@gateway_app.command("stop")
+def gateway_stop():
+    """Stop the nanobot gateway."""
+    pid = _gateway_pid()
+    if pid is None or not _is_process_running(pid):
+        console.print("[yellow]Gateway is not running[/yellow]")
+        raise typer.Exit(1)
 
-    def _pick_heartbeat_target() -> tuple[str, str]:
-        """Pick a routable channel/chat target for heartbeat-triggered messages."""
-        enabled = set(channels.enabled_channels)
-        # Prefer the most recently updated non-internal session on an enabled channel.
-        for item in session_manager.list_sessions():
-            key = item.get("key") or ""
-            if ":" not in key:
-                continue
-            channel, chat_id = key.split(":", 1)
-            if channel in {"cli", "system"}:
-                continue
-            if channel in enabled and chat_id:
-                return channel, chat_id
-        # Fallback keeps prior behavior but remains explicit.
-        return "cli", "direct"
+    os.kill(pid, signal.SIGTERM)
+    console.print(f"[green]Gateway stopped[/green] (PID {pid})")
 
-    # Create heartbeat service
-    async def on_heartbeat_execute(tasks: str) -> str:
-        """Phase 2: execute heartbeat tasks through the full agent loop."""
-        channel, chat_id = _pick_heartbeat_target()
 
-        async def _silent(*_args, **_kwargs):
-            pass
+@gateway_app.command("status")
+def gateway_status():
+    """Show gateway status."""
+    pid = _gateway_pid()
+    if pid is None or not _is_process_running(pid):
+        console.print("[yellow]Gateway is not running[/yellow]")
+        raise typer.Exit(1)
 
-        resp = await agent.process_direct(
-            tasks,
-            session_key="heartbeat",
-            channel=channel,
-            chat_id=chat_id,
-            on_progress=_silent,
-        )
-        return resp.content if resp else ""
-
-    async def on_heartbeat_notify(response: str) -> None:
-        """Deliver a heartbeat response to the user's channel."""
-        from nanobot.bus.events import OutboundMessage
-        channel, chat_id = _pick_heartbeat_target()
-        if channel == "cli":
-            return  # No external channel available to deliver to
-        await bus.publish_outbound(OutboundMessage(channel=channel, chat_id=chat_id, content=response))
-
-    hb_cfg = config.gateway.heartbeat
-    heartbeat = HeartbeatService(
-        workspace=config.workspace_path,
-        provider=provider,
-        model=agent.model,
-        on_execute=on_heartbeat_execute,
-        on_notify=on_heartbeat_notify,
-        interval_s=hb_cfg.interval_s,
-        enabled=hb_cfg.enabled,
-    )
-
-    if channels.enabled_channels:
-        console.print(f"[green]✓[/green] Channels enabled: {', '.join(channels.enabled_channels)}")
-    else:
-        console.print("[yellow]Warning: No channels enabled[/yellow]")
-
-    cron_status = cron.status()
-    if cron_status["jobs"] > 0:
-        console.print(f"[green]✓[/green] Cron: {cron_status['jobs']} scheduled jobs")
-
-    console.print(f"[green]✓[/green] Heartbeat: every {hb_cfg.interval_s}s")
-
-    async def run():
-        try:
-            await cron.start()
-            await heartbeat.start()
-            await asyncio.gather(
-                agent.run(),
-                channels.start_all(),
-            )
-        except KeyboardInterrupt:
-            console.print("\nShutting down...")
-        except Exception:
-            import traceback
-            console.print("\n[red]Error: Gateway crashed unexpectedly[/red]")
-            console.print(traceback.format_exc())
-        finally:
-            await agent.close_mcp()
-            heartbeat.stop()
-            cron.stop()
-            agent.stop()
-            await channels.stop_all()
-
-    asyncio.run(run())
+    console.print(f"[green]Gateway is running[/green] (PID {pid})")
+    console.print(f"[dim]Log: {_GATEWAY_LOG_FILE}[/dim]")
 
 
 

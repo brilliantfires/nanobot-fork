@@ -1,5 +1,8 @@
 import json
 import re
+import signal
+import subprocess
+import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -197,7 +200,7 @@ def test_onboard_wizard_preserves_explicit_config_in_next_steps(tmp_path, monkey
     compact_output = stripped_output.replace("\n", "")
     resolved_config = str(config_path.resolve())
     assert f'nanobot agent -m "Hello!" --config {resolved_config}' in compact_output
-    assert f"nanobot gateway --config {resolved_config}" in compact_output
+    assert f"nanobot gateway start --config {resolved_config}" in compact_output
 
 
 def test_config_matches_github_copilot_codex_with_hyphen_prefix():
@@ -500,7 +503,7 @@ def test_gateway_uses_workspace_from_config_by_default(monkeypatch, tmp_path: Pa
         lambda _config: (_ for _ in ()).throw(_StopGatewayError("stop")),
     )
 
-    result = runner.invoke(app, ["gateway", "--config", str(config_file)])
+    result = runner.invoke(app, ["gateway", "run", "--config", str(config_file)])
 
     assert isinstance(result.exception, _StopGatewayError)
     assert seen["config_path"] == config_file.resolve()
@@ -530,7 +533,7 @@ def test_gateway_workspace_option_overrides_config(monkeypatch, tmp_path: Path) 
 
     result = runner.invoke(
         app,
-        ["gateway", "--config", str(config_file), "--workspace", str(override)],
+        ["gateway", "run", "--config", str(config_file), "--workspace", str(override)],
     )
 
     assert isinstance(result.exception, _StopGatewayError)
@@ -562,7 +565,7 @@ def test_gateway_uses_config_directory_for_cron_store(monkeypatch, tmp_path: Pat
 
     monkeypatch.setattr("nanobot.cron.service.CronService", _StopCron)
 
-    result = runner.invoke(app, ["gateway", "--config", str(config_file)])
+    result = runner.invoke(app, ["gateway", "run", "--config", str(config_file)])
 
     assert isinstance(result.exception, _StopGatewayError)
     assert seen["cron_store"] == config_file.parent / "cron" / "jobs.json"
@@ -584,7 +587,7 @@ def test_gateway_uses_configured_port_when_cli_flag_is_missing(monkeypatch, tmp_
         lambda _config: (_ for _ in ()).throw(_StopGatewayError("stop")),
     )
 
-    result = runner.invoke(app, ["gateway", "--config", str(config_file)])
+    result = runner.invoke(app, ["gateway", "run", "--config", str(config_file)])
 
     assert isinstance(result.exception, _StopGatewayError)
     assert "port 18791" in result.stdout
@@ -606,7 +609,82 @@ def test_gateway_cli_port_overrides_configured_port(monkeypatch, tmp_path: Path)
         lambda _config: (_ for _ in ()).throw(_StopGatewayError("stop")),
     )
 
-    result = runner.invoke(app, ["gateway", "--config", str(config_file), "--port", "18792"])
+    result = runner.invoke(app, ["gateway", "run", "--config", str(config_file), "--port", "18792"])
 
     assert isinstance(result.exception, _StopGatewayError)
     assert "port 18792" in result.stdout
+
+
+def test_gateway_start_spawns_background_process(monkeypatch, tmp_path: Path) -> None:
+    log_dir = tmp_path / "logs" / "gateway"
+    log_file = log_dir / "gateway.log"
+    pid_file = log_dir / "gateway.pid"
+
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_FILE", log_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+
+    seen: dict[str, object] = {}
+
+    class _Proc:
+        pid = 43210
+
+    def _fake_popen(cmd, **kwargs):
+        seen["cmd"] = cmd
+        seen["kwargs"] = kwargs
+        return _Proc()
+
+    monkeypatch.setattr("nanobot.cli.commands.subprocess.Popen", _fake_popen)
+
+    result = runner.invoke(app, ["gateway", "start", "--port", "18792", "--verbose"])
+
+    assert result.exit_code == 0
+    assert seen["cmd"] == [
+        sys.executable, "-m", "nanobot", "gateway", "run", "--port", "18792", "--verbose",
+    ]
+    assert seen["kwargs"]["stdin"] == subprocess.DEVNULL
+    assert seen["kwargs"]["start_new_session"] is True
+    assert log_file.exists()
+    assert "Gateway started" in result.stdout
+
+
+def test_gateway_stop_signals_running_process(monkeypatch, tmp_path: Path) -> None:
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    log_dir.mkdir(parents=True)
+    pid_file.write_text("12345", encoding="utf-8")
+
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._is_process_running", lambda pid: pid == 12345)
+
+    seen: dict[str, int] = {}
+
+    def _fake_kill(pid: int, sig: int) -> None:
+        seen["pid"] = pid
+        seen["sig"] = sig
+
+    monkeypatch.setattr("nanobot.cli.commands.os.kill", _fake_kill)
+
+    result = runner.invoke(app, ["gateway", "stop"])
+
+    assert result.exit_code == 0
+    assert seen == {"pid": 12345, "sig": signal.SIGTERM}
+    assert "Gateway stopped" in result.stdout
+
+
+def test_gateway_status_reports_running_process(monkeypatch, tmp_path: Path) -> None:
+    log_dir = tmp_path / "logs" / "gateway"
+    log_file = log_dir / "gateway.log"
+    pid_file = log_dir / "gateway.pid"
+    log_dir.mkdir(parents=True)
+    pid_file.write_text("12345", encoding="utf-8")
+
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_FILE", log_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._is_process_running", lambda pid: pid == 12345)
+
+    result = runner.invoke(app, ["gateway", "status"])
+
+    assert result.exit_code == 0
+    assert "Gateway is running" in result.stdout
+    assert str(log_file) in result.stdout.replace("\n", "")

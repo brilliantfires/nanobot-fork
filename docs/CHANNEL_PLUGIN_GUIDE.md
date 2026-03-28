@@ -1,31 +1,31 @@
-# Channel Plugin Guide
+# 通道插件指南
 
-Build a custom nanobot channel in three steps: subclass, package, install.
+只需三步即可构建一个自定义 nanobot 通道：继承、打包、安装。
 
-## How It Works
+## 工作原理
 
-nanobot discovers channel plugins via Python [entry points](https://packaging.python.org/en/latest/specifications/entry-points/). When `nanobot gateway` starts, it scans:
+nanobot 通过 Python 的 [entry points](https://packaging.python.org/en/latest/specifications/entry-points/) 发现通道插件。当你执行 `nanobot gateway start` 启动 gateway 时，会扫描：
 
-1. Built-in channels in `nanobot/channels/`
-2. External packages registered under the `nanobot.channels` entry point group
+1. `nanobot/channels/` 中的内建通道
+2. 注册在 `nanobot.channels` entry point 组下的外部包
 
-If a matching config section has `"enabled": true`, the channel is instantiated and started.
+如果对应的配置段包含 `"enabled": true`，该通道就会被实例化并启动。
 
-## Quick Start
+## 快速开始
 
-We'll build a minimal webhook channel that receives messages via HTTP POST and sends replies back.
+我们来构建一个最小化的 webhook 通道：它通过 HTTP POST 接收消息，并把回复发回去。
 
-### Project Structure
+### 项目结构
 
 ```
 nanobot-channel-webhook/
 ├── nanobot_channel_webhook/
-│   ├── __init__.py          # re-export WebhookChannel
-│   └── channel.py           # channel implementation
+│   ├── __init__.py          # 重新导出 WebhookChannel
+│   └── channel.py           # 通道实现
 └── pyproject.toml
 ```
 
-### 1. Create Your Channel
+### 1. 创建你的通道
 
 ```python
 # nanobot_channel_webhook/__init__.py
@@ -55,10 +55,10 @@ class WebhookChannel(BaseChannel):
         return {"enabled": False, "port": 9000, "allowFrom": []}
 
     async def start(self) -> None:
-        """Start an HTTP server that listens for incoming messages.
+        """启动一个 HTTP 服务，监听传入消息。
 
-        IMPORTANT: start() must block forever (or until stop() is called).
-        If it returns, the channel is considered dead.
+        重要：start() 必须永久阻塞（或直到 stop() 被调用）。
+        如果它返回了，通道会被视为已失效。
         """
         self._running = True
         port = self.config.get("port", 9000)
@@ -69,9 +69,9 @@ class WebhookChannel(BaseChannel):
         await runner.setup()
         site = web.TCPSite(runner, "0.0.0.0", port)
         await site.start()
-        logger.info("Webhook listening on :{}", port)
+        logger.info("Webhook 监听于 :{}", port)
 
-        # Block until stopped
+        # 一直阻塞，直到被停止
         while self._running:
             await asyncio.sleep(1)
 
@@ -81,26 +81,26 @@ class WebhookChannel(BaseChannel):
         self._running = False
 
     async def send(self, msg: OutboundMessage) -> None:
-        """Deliver an outbound message.
+        """投递一条外发消息。
 
-        msg.content  — markdown text (convert to platform format as needed)
-        msg.media    — list of local file paths to attach
-        msg.chat_id  — the recipient (same chat_id you passed to _handle_message)
-        msg.metadata — may contain "_progress": True for streaming chunks
+        msg.content  — markdown 文本（按需转换为平台格式）
+        msg.media    — 要附带的本地文件路径列表
+        msg.chat_id  — 接收方（与你传给 _handle_message 的 chat_id 相同）
+        msg.metadata — 可能包含 "_progress": True，用于流式输出片段
         """
         logger.info("[webhook] -> {}: {}", msg.chat_id, msg.content[:80])
-        # In a real plugin: POST to a callback URL, send via SDK, etc.
+        # 真实插件里可在这里 POST 到回调地址、调用 SDK 等。
 
     async def _on_request(self, request: web.Request) -> web.Response:
-        """Handle an incoming HTTP POST."""
+        """处理传入的 HTTP POST。"""
         body = await request.json()
         sender = body.get("sender", "unknown")
         chat_id = body.get("chat_id", sender)
         text = body.get("text", "")
-        media = body.get("media", [])       # list of URLs
+        media = body.get("media", [])       # URL 列表
 
-        # This is the key call: validates allowFrom, then puts the
-        # message onto the bus for the agent to process.
+        # 这是关键调用：会校验 allowFrom，然后把消息放到
+        # bus 中交给 agent 处理。
         await self._handle_message(
             sender_id=sender,
             chat_id=chat_id,
@@ -111,7 +111,7 @@ class WebhookChannel(BaseChannel):
         return web.json_response({"ok": True})
 ```
 
-### 2. Register the Entry Point
+### 2. 注册 Entry Point
 
 ```toml
 # pyproject.toml
@@ -128,17 +128,17 @@ requires = ["setuptools"]
 build-backend = "setuptools.backends._legacy:_Backend"
 ```
 
-The key (`webhook`) becomes the config section name. The value points to your `BaseChannel` subclass.
+这里的键（`webhook`）会成为配置段名称，值则指向你的 `BaseChannel` 子类。
 
-### 3. Install & Configure
+### 3. 安装并配置
 
 ```bash
 pip install -e .
-nanobot plugins list      # verify "Webhook" shows as "plugin"
-nanobot onboard           # auto-adds default config for detected plugins
+nanobot plugins list      # 验证 "Webhook" 显示为 "plugin"
+nanobot onboard           # 为已检测到的插件自动添加默认配置
 ```
 
-Edit `~/.nanobot/config.json`:
+编辑 `~/.nanobot/config.json`：
 
 ```json
 {
@@ -152,13 +152,13 @@ Edit `~/.nanobot/config.json`:
 }
 ```
 
-### 4. Run & Test
+### 4. 运行并测试
 
 ```bash
-nanobot gateway
+nanobot gateway start
 ```
 
-In another terminal:
+在另一个终端中：
 
 ```bash
 curl -X POST http://localhost:9000/message \
@@ -166,86 +166,86 @@ curl -X POST http://localhost:9000/message \
   -d '{"sender": "user1", "chat_id": "user1", "text": "Hello!"}'
 ```
 
-The agent receives the message and processes it. Replies arrive in your `send()` method.
+agent 会收到消息并进行处理。回复会通过你的 `send()` 方法送出。
 
 ## BaseChannel API
 
-### Required (abstract)
+### 必需项（抽象方法）
 
-| Method | Description |
+| 方法 | 说明 |
 |--------|-------------|
-| `async start()` | **Must block forever.** Connect to platform, listen for messages, call `_handle_message()` on each. If this returns, the channel is dead. |
-| `async stop()` | Set `self._running = False` and clean up. Called when gateway shuts down. |
-| `async send(msg: OutboundMessage)` | Deliver an outbound message to the platform. |
+| `async start()` | **必须永久阻塞。** 连接平台、监听消息，并在每条消息上调用 `_handle_message()`。如果该方法返回，说明通道已失效。 |
+| `async stop()` | 设置 `self._running = False` 并清理资源。会在 gateway 关闭时调用。 |
+| `async send(msg: OutboundMessage)` | 将外发消息投递到目标平台。 |
 
-### Provided by Base
+### Base 提供的能力
 
-| Method / Property | Description |
+| 方法 / 属性 | 说明 |
 |-------------------|-------------|
-| `_handle_message(sender_id, chat_id, content, media?, metadata?, session_key?)` | **Call this when you receive a message.** Checks `is_allowed()`, then publishes to the bus. Automatically sets `_wants_stream` if `supports_streaming` is true. |
-| `is_allowed(sender_id)` | Checks against `config["allowFrom"]`; `"*"` allows all, `[]` denies all. |
-| `default_config()` (classmethod) | Returns default config dict for `nanobot onboard`. Override to declare your fields. |
-| `transcribe_audio(file_path)` | Transcribes audio via Groq Whisper (if configured). |
-| `supports_streaming` (property) | `True` when config has `"streaming": true` **and** subclass overrides `send_delta()`. |
-| `is_running` | Returns `self._running`. |
+| `_handle_message(sender_id, chat_id, content, media?, metadata?, session_key?)` | **收到消息时调用它。** 会检查 `is_allowed()`，然后把消息发布到 bus。如果 `supports_streaming` 为真，也会自动设置 `_wants_stream`。 |
+| `is_allowed(sender_id)` | 根据 `config["allowFrom"]` 检查是否允许；`"*"` 表示允许所有人，`[]` 表示拒绝所有人。 |
+| `default_config()` (classmethod) | 返回 `nanobot onboard` 使用的默认配置字典。重写它以声明你的字段。 |
+| `transcribe_audio(file_path)` | 通过 Groq Whisper 转写音频（若已配置）。 |
+| `supports_streaming` (property) | 当配置中有 `"streaming": true` **且** 子类重写了 `send_delta()` 时返回 `True`。 |
+| `is_running` | 返回 `self._running`。 |
 
-### Optional (streaming)
+### 可选项（流式输出）
 
-| Method | Description |
+| 方法 | 说明 |
 |--------|-------------|
-| `async send_delta(chat_id, delta, metadata?)` | Override to receive streaming chunks. See [Streaming Support](#streaming-support) for details. |
+| `async send_delta(chat_id, delta, metadata?)` | 重写它以接收流式输出片段。详见 [流式支持](#流式支持)。 |
 
-### Message Types
+### 消息类型
 
 ```python
 @dataclass
 class OutboundMessage:
-    channel: str        # your channel name
-    chat_id: str        # recipient (same value you passed to _handle_message)
-    content: str        # markdown text — convert to platform format as needed
-    media: list[str]    # local file paths to attach (images, audio, docs)
-    metadata: dict      # may contain: "_progress" (bool) for streaming chunks,
-                        #              "message_id" for reply threading
+    channel: str        # 你的通道名称
+    chat_id: str        # 接收方（与你传给 _handle_message 的值相同）
+    content: str        # markdown 文本 —— 按需转换为平台格式
+    media: list[str]    # 要附带的本地文件路径（图片、音频、文档）
+    metadata: dict      # 可能包含："_progress"（bool，用于流式片段），
+                        #              "message_id"（用于回复串联）
 ```
 
-## Streaming Support
+## 流式支持
 
-Channels can opt into real-time streaming — the agent sends content token-by-token instead of one final message. This is entirely optional; channels work fine without it.
+通道可以选择支持实时流式输出，agent 会逐 token 发送内容，而不是只发一条最终消息。这完全是可选的；即便不支持流式，通道也能正常工作。
 
-### How It Works
+### 工作方式
 
-When **both** conditions are met, the agent streams content through your channel:
+当以下 **两个条件同时满足** 时，agent 会通过你的通道进行流式输出：
 
-1. Config has `"streaming": true`
-2. Your subclass overrides `send_delta()`
+1. 配置中有 `"streaming": true`
+2. 你的子类重写了 `send_delta()`
 
-If either is missing, the agent falls back to the normal one-shot `send()` path.
+如果缺少任一条件，agent 会退回到常规的一次性 `send()` 路径。
 
-### Implementing `send_delta`
+### 实现 `send_delta`
 
-Override `send_delta` to handle two types of calls:
+重写 `send_delta` 来处理两类调用：
 
 ```python
 async def send_delta(self, chat_id: str, delta: str, metadata: dict[str, Any] | None = None) -> None:
     meta = metadata or {}
 
     if meta.get("_stream_end"):
-        # Streaming finished — do final formatting, cleanup, etc.
+        # 流式输出结束 —— 在这里做最终格式化、清理等
         return
 
-    # Regular delta — append text, update the message on screen
-    # delta contains a small chunk of text (a few tokens)
+    # 常规增量 —— 追加文本，更新屏幕上的消息
+    # delta 是一小段文本（几个 token）
 ```
 
-**Metadata flags:**
+**Metadata 标记：**
 
-| Flag | Meaning |
+| 标记 | 含义 |
 |------|---------|
-| `_stream_delta: True` | A content chunk (delta contains the new text) |
-| `_stream_end: True` | Streaming finished (delta is empty) |
-| `_resuming: True` | More streaming rounds coming (e.g. tool call then another response) |
+| `_stream_delta: True` | 一段内容增量（delta 中是新增文本） |
+| `_stream_end: True` | 流式输出完成（delta 为空） |
+| `_resuming: True` | 后面还会继续来新的流式轮次（例如工具调用后继续回复） |
 
-### Example: Webhook with Streaming
+### 示例：带流式输出的 Webhook
 
 ```python
 class WebhookChannel(BaseChannel):
@@ -260,23 +260,23 @@ class WebhookChannel(BaseChannel):
         meta = metadata or {}
         if meta.get("_stream_end"):
             text = self._buffers.pop(chat_id, "")
-            # Final delivery — format and send the complete message
+            # 最终投递 —— 格式化并发送完整消息
             await self._deliver(chat_id, text, final=True)
             return
 
         self._buffers.setdefault(chat_id, "")
         self._buffers[chat_id] += delta
-        # Incremental update — push partial text to the client
+        # 增量更新 —— 把部分文本推送给客户端
         await self._deliver(chat_id, self._buffers[chat_id], final=False)
 
     async def send(self, msg: OutboundMessage) -> None:
-        # Non-streaming path — unchanged
+        # 非流式路径 —— 保持不变
         await self._deliver(msg.chat_id, msg.content, final=True)
 ```
 
-### Config
+### 配置
 
-Enable streaming per channel:
+按通道启用流式输出：
 
 ```json
 {
@@ -290,18 +290,18 @@ Enable streaming per channel:
 }
 ```
 
-When `streaming` is `false` (default) or omitted, only `send()` is called — no streaming overhead.
+当 `streaming` 为 `false`（默认）或未设置时，只会调用 `send()`，不会有流式开销。
 
-### BaseChannel Streaming API
+### BaseChannel 的流式 API
 
-| Method / Property | Description |
+| 方法 / 属性 | 说明 |
 |-------------------|-------------|
-| `async send_delta(chat_id, delta, metadata?)` | Override to handle streaming chunks. No-op by default. |
-| `supports_streaming` (property) | Returns `True` when config has `streaming: true` **and** subclass overrides `send_delta`. |
+| `async send_delta(chat_id, delta, metadata?)` | 重写以处理流式输出片段。默认是 no-op。 |
+| `supports_streaming` (property) | 当配置中有 `streaming: true` **且** 子类重写了 `send_delta` 时，返回 `True`。 |
 
-## Config
+## 配置
 
-Your channel receives config as a plain `dict`. Access fields with `.get()`:
+你的通道会收到普通的 `dict` 配置。用 `.get()` 访问字段：
 
 ```python
 async def start(self) -> None:
@@ -309,9 +309,9 @@ async def start(self) -> None:
     token = self.config.get("token", "")
 ```
 
-`allowFrom` is handled automatically by `_handle_message()` — you don't need to check it yourself.
+`allowFrom` 会由 `_handle_message()` 自动处理，你不需要自己检查。
 
-Override `default_config()` so `nanobot onboard` auto-populates `config.json`:
+重写 `default_config()`，这样 `nanobot onboard` 会自动填充 `config.json`：
 
 ```python
 @classmethod
@@ -319,28 +319,28 @@ def default_config(cls) -> dict[str, Any]:
     return {"enabled": False, "port": 9000, "allowFrom": []}
 ```
 
-If not overridden, the base class returns `{"enabled": false}`.
+如果不重写，基类默认返回 `{"enabled": false}`。
 
-## Naming Convention
+## 命名约定
 
-| What | Format | Example |
+| 项目 | 格式 | 示例 |
 |------|--------|---------|
-| PyPI package | `nanobot-channel-{name}` | `nanobot-channel-webhook` |
-| Entry point key | `{name}` | `webhook` |
-| Config section | `channels.{name}` | `channels.webhook` |
-| Python package | `nanobot_channel_{name}` | `nanobot_channel_webhook` |
+| PyPI 包名 | `nanobot-channel-{name}` | `nanobot-channel-webhook` |
+| Entry point 键 | `{name}` | `webhook` |
+| 配置段 | `channels.{name}` | `channels.webhook` |
+| Python 包名 | `nanobot_channel_{name}` | `nanobot_channel_webhook` |
 
-## Local Development
+## 本地开发
 
 ```bash
 git clone https://github.com/you/nanobot-channel-webhook
 cd nanobot-channel-webhook
 pip install -e .
-nanobot plugins list    # should show "Webhook" as "plugin"
-nanobot gateway         # test end-to-end
+nanobot plugins list    # 应显示 "Webhook" 且来源为 "plugin"
+nanobot gateway start   # 端到端测试
 ```
 
-## Verify
+## 验证
 
 ```bash
 $ nanobot plugins list

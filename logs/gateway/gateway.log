@@ -1,0 +1,167 @@
+🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
+✓ Channels enabled: qq
+2026-03-28 21:01:51.196 | INFO     | nanobot.channels.manager:_init_channels:54 - QQ channel enabled
+✓ Heartbeat: every 1800s
+2026-03-28 21:01:51.198 | INFO     | nanobot.cron.service:_load_store:85 - Cron: jobs.json modified externally, reloading
+2026-03-28 21:01:51.199 | INFO     | nanobot.cron.service:start:202 - Cron service started with 0 jobs
+[botpy] 登录机器人账号中...
+2026-03-28 21:01:51.199 | INFO     | nanobot.heartbeat.service:start:122 - Heartbeat started (every 1800s)
+2026-03-28 21:01:51.199 | INFO     | nanobot.agent.loop:run:333 - Agent loop started
+2026-03-28 21:01:51.199 | INFO     | nanobot.channels.manager:start_all:87 - Starting qq channel...
+2026-03-28 21:01:51.200 | INFO     | nanobot.channels.manager:_dispatch_outbound:115 - Outbound dispatcher started
+2026-03-28 21:01:51.200 | INFO     | nanobot.channels.qq:start:97 - QQ bot started (C2C & Group supported)
+[botpy] access_token expires_in 5523
+[botpy] 程序启动...
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 鉴权中...
+[botpy] 机器人「Nano-Bot」启动成功！
+[botpy] 心跳维持启动...
+2026-03-28 21:01:52.263 | INFO     | nanobot.channels.qq:on_ready:40 - QQ bot ready: Nano-Bot
+2026-03-28 21:02:03.330 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 你好
+[92m21:02:06 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:02:11.754 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 你好！👋 很高兴见到你！
+
+我是 nanobot 🐈，你的个人AI助手。现在是 2026年3月28日 21:02（星期六），我在QQ频道与你对话。
+
+我可以帮助你处理各种任务，比如：
+- 📝 文件读写和编辑
+- 🔍 网络搜索和信息获取  
+...
+2026-03-28 21:02:27.965 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 今天武汉天气如何？
+[92m21:02:28 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:02:31.760 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "curl -s \"wttr.in/Wuhan?format=3\""})
+[92m21:02:33 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:02:37.860 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "curl -s \"wttr.in/Wuhan?format=%l:+%c+%t+%h+%w\""})
+[92m21:02:38 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:02:42.206 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "curl -s \"wttr.in/Wuhan?1\""})
+[92m21:02:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:02:52.504 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 根据查询结果，今天武汉的天气情况如下：
+
+## 🌤️ 武汉今日天气（2026年3月28日）
+
+**当前天气**：
+- **温度**：20°C
+- **天气状况**：晴朗 ☀️
+- **湿度**：68%
+- **风速**：9 km/h（北风 ...
+2026-03-28 21:11:52.364 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 检查有几个skill？
+[92m21:11:52 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:11:57.602 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "ls -la /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/"})
+[92m21:11:57 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:12:03.160 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "find /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/ -name \"SKILL.md\" | wc -l"})
+[92m21:12:03 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:12:06.918 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "find /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/ -name \"SKILL.md\" -exec basename {} \\; | sort"})
+[92m21:12:07 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:12:10.936 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "find /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/ -name \"SKILL.md\" -exec dirname {} \\; | xargs -I {} basename {} | sort"})
+[92m21:12:11 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:12:23.653 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 根据检查结果，当前共有 **9个技能**：
+
+## 📋 技能列表
+
+### ✅ 已安装且可用的技能（6个）：
+1. **memory** - 记忆系统
+2. **clawhub** - 技能库搜索和安装  
+3. **skill-creat...
+2026-03-28 21:25:47.106 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 使用网易爆米花，看看我的库里面有哪些影片
+[92m21:25:47 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:25:51.452 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: read_file({"path": "/Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/netease-baomihua-player/SKILL.md"})
+[92m21:25:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:25:56.799 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI check-install"})
+[92m21:25:56 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:26:01.028 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI list-filter-sources"})
+[92m21:26:01 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:26:05.850 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI filter-bmh-media --page 1 --page-size 20"})
+[92m21:26:06 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:26:10.488 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI filter-bmh-media --page 2 --page-size 20"})
+[92m21:26:10 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:26:15.367 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI filter-bmh-media --page 3 --page-size 20"})
+[92m21:26:15 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-03-28 21:26:45.938 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 根据查询结果，我来为你整理网易爆米花媒体库中的影片信息：
+
+## 🎬 你的网易爆米花媒体库影片列表
+
+### 📊 统计信息
+- **总影片数**：40部（第1页20部 + 第2页20部）
+- **媒体类型**：电视剧（剧集）和电影
+- **...
+2026-03-28 21:31:51.155 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:31:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+2026-03-28 21:31:54.578 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-03-28 22:01:54.570 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m22:01:54 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+2026-03-28 22:01:57.659 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...

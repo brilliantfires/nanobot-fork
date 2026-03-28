@@ -1,25 +1,25 @@
-# nanobot Skills
+# nanobot 技能
 
-This directory contains built-in skills that extend nanobot's capabilities.
+这个目录包含用于扩展 nanobot 能力的内建技能。
 
-## Skill Format
+## 技能格式
 
-Each skill is a directory containing a `SKILL.md` file with:
-- YAML frontmatter (name, description, metadata)
-- Markdown instructions for the agent
+每个技能都是一个目录，内部包含一个 `SKILL.md` 文件，内容包括：
+- YAML frontmatter（名称、描述、元数据）
+- 面向 agent 的 Markdown 指令
 
-## Attribution
+## 来源说明
 
-These skills are adapted from [OpenClaw](https://github.com/openclaw/openclaw)'s skill system.
-The skill format and metadata structure follow OpenClaw's conventions to maintain compatibility.
+这些技能改编自 [OpenClaw](https://github.com/openclaw/openclaw) 的技能系统。
+技能格式和元数据结构遵循 OpenClaw 的约定，以保持兼容性。
 
-## Available Skills
+## 可用技能
 
-| Skill | Description |
+| 技能 | 描述 |
 |-------|-------------|
-| `github` | Interact with GitHub using the `gh` CLI |
-| `weather` | Get weather info using wttr.in and Open-Meteo |
-| `summarize` | Summarize URLs, files, and YouTube videos |
-| `tmux` | Remote-control tmux sessions |
-| `clawhub` | Search and install skills from ClawHub registry |
-| `skill-creator` | Create new skills |
+| `github` | 使用 `gh` CLI 与 GitHub 交互 |
+| `weather` | 使用 wttr.in 和 Open-Meteo 获取天气信息 |
+| `summarize` | 总结 URL、文件和 YouTube 视频 |
+| `tmux` | 远程控制 tmux 会话 |
+| `clawhub` | 从 ClawHub 注册表搜索并安装技能 |
+| `skill-creator` | 创建新技能 |
