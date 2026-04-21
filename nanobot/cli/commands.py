@@ -1,12 +1,16 @@
 """CLI commands for nanobot."""
 
 import asyncio
+import base64
+import errno
+import fcntl
 from contextlib import contextmanager, nullcontext
 import os
 import select
 import signal
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -51,6 +55,8 @@ _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _GATEWAY_LOG_DIR = _PROJECT_ROOT / "logs" / "gateway"
 _GATEWAY_LOG_FILE = _GATEWAY_LOG_DIR / "gateway.log"
 _GATEWAY_PID_FILE = _GATEWAY_LOG_DIR / "gateway.pid"
+_GATEWAY_LOCK_FILE = _GATEWAY_LOG_DIR / "gateway.lock"
+_GATEWAY_LOCK_FD: int | None = None
 
 # ---------------------------------------------------------------------------
 # CLI input: prompt_toolkit for editing, paste, history, and display
@@ -132,6 +138,75 @@ def _gateway_pid() -> int | None:
     return int(raw) if raw else None
 
 
+def _acquire_gateway_lock() -> bool:
+    """Acquire the singleton gateway lock for the current process."""
+    global _GATEWAY_LOCK_FD
+
+    _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    fd = os.open(_GATEWAY_LOCK_FILE, os.O_CREAT | os.O_RDWR, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError as exc:
+        os.close(fd)
+        if exc.errno in {errno.EACCES, errno.EAGAIN}:
+            return False
+        raise
+
+    os.ftruncate(fd, 0)
+    os.write(fd, f"{os.getpid()}\n".encode("utf-8"))
+    os.fsync(fd)
+    _GATEWAY_LOCK_FD = fd
+    return True
+
+
+def _release_gateway_lock() -> None:
+    """Release the singleton gateway lock held by the current process."""
+    global _GATEWAY_LOCK_FD
+    if _GATEWAY_LOCK_FD is None:
+        return
+
+    try:
+        fcntl.flock(_GATEWAY_LOCK_FD, fcntl.LOCK_UN)
+    finally:
+        os.close(_GATEWAY_LOCK_FD)
+        _GATEWAY_LOCK_FD = None
+
+
+def _gateway_running_pid() -> int | None:
+    """Return the running gateway PID when another process holds the lock."""
+    _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    fd = os.open(_GATEWAY_LOCK_FILE, os.O_CREAT | os.O_RDWR, 0o644)
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            if exc.errno not in {errno.EACCES, errno.EAGAIN}:
+                raise
+            raw = os.read(fd, 64).decode("utf-8").strip()
+            return int(raw) if raw else None
+
+        return None
+    finally:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+        finally:
+            os.close(fd)
+
+
+def _stop_gateway_instance(pid: int) -> None:
+    """Terminate the running gateway and wait briefly for it to exit."""
+    os.kill(pid, signal.SIGTERM)
+
+    deadline = time.time() + 5.0
+    while time.time() < deadline:
+        if not _is_process_running(pid):
+            return
+        time.sleep(0.1)
+
+    console.print(f"[red]Failed to stop gateway[/red] (PID {pid})")
+    raise typer.Exit(1)
+
+
 def _is_process_running(pid: int) -> bool:
     try:
         os.kill(pid, 0)
@@ -203,6 +278,7 @@ def _run_gateway_service(
         web_search_config=config.tools.web.search,
         web_proxy=config.tools.web.proxy or None,
         exec_config=config.tools.exec,
+        phone_config=config.tools.phone_agent,
         cron_service=cron,
         restrict_to_workspace=config.tools.restrict_to_workspace,
         session_manager=session_manager,
@@ -693,6 +769,119 @@ def _warn_deprecated_config_keys(config_path: Path | None) -> None:
         )
 
 
+def _load_phone_runtime_config(
+    config: str | None,
+    workspace: str | None,
+    device_id: str | None = None,
+) -> tuple[Config, Any]:
+    """
+    Load runtime config and extract an enabled phone configuration copy.
+
+    Args:
+        config: Optional config path override.
+        workspace: Optional workspace path override.
+        device_id: Optional adb device override for the current command.
+
+    Returns:
+        Tuple of loaded root config and a mutable phone config copy.
+    """
+    loaded = _load_runtime_config(config, workspace)
+    phone_config = loaded.tools.phone_agent.model_copy(deep=True)
+    phone_config.enable = True
+    if device_id:
+        phone_config.device_id = device_id
+    return loaded, phone_config
+
+
+def _save_phone_screenshot(blocks: list[dict[str, Any]], target: Path) -> None:
+    """
+    Persist the image payload returned by ``phone_screenshot``.
+
+    Args:
+        blocks: Multimodal content blocks from ``PhoneScreenshotTool.execute``.
+        target: Output PNG path.
+    """
+    image_block = next(
+        (block for block in blocks if isinstance(block, dict) and block.get("type") == "image_url"),
+        None,
+    )
+    if image_block is None:
+        raise RuntimeError("phone_screenshot did not return an image block.")
+
+    data_url = image_block.get("image_url", {}).get("url", "")
+    if "," not in data_url:
+        raise RuntimeError("phone_screenshot returned an invalid data URL.")
+
+    _, encoded = data_url.split(",", 1)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(base64.b64decode(encoded))
+
+
+async def _run_phone_smoke_steps(
+    phone_config: Any,
+    output_dir: Path,
+    app_name: str,
+    tap_x: int,
+    tap_y: int,
+    perform_tap: bool,
+) -> list[Path]:
+    """
+    Execute a minimal real-device smoke flow through the current phone tools.
+
+    Args:
+        phone_config: Enabled phone runtime config.
+        output_dir: Directory used to store screenshots.
+        app_name: App name to launch during the smoke test.
+        tap_x: Relative tap X coordinate.
+        tap_y: Relative tap Y coordinate.
+        perform_tap: Whether to perform the tap step.
+
+    Returns:
+        Paths of screenshots captured during the smoke test.
+    """
+    from nanobot.agent.tools.phone import (
+        PhoneHomeTool,
+        PhoneLaunchTool,
+        PhoneRuntimeState,
+        PhoneScreenshotTool,
+        PhoneTapTool,
+        PhoneWaitTool,
+    )
+
+    state = PhoneRuntimeState()
+    screenshot_tool = PhoneScreenshotTool(phone_config, state)
+    home_tool = PhoneHomeTool(phone_config, state)
+    launch_tool = PhoneLaunchTool(phone_config, state)
+    tap_tool = PhoneTapTool(phone_config, state)
+    wait_tool = PhoneWaitTool(phone_config, state)
+    saved_paths: list[Path] = []
+
+    first_screen = await screenshot_tool.execute()
+    first_path = output_dir / "01-before-home.png"
+    _save_phone_screenshot(first_screen, first_path)
+    saved_paths.append(first_path)
+
+    await home_tool.execute()
+    await wait_tool.execute(seconds=1.0)
+
+    await launch_tool.execute(app_name=app_name)
+    await wait_tool.execute(seconds=2.0)
+    second_screen = await screenshot_tool.execute()
+    second_path = output_dir / "02-after-launch.png"
+    _save_phone_screenshot(second_screen, second_path)
+    saved_paths.append(second_path)
+
+    if perform_tap:
+        await tap_tool.execute(x=tap_x, y=tap_y)
+        await wait_tool.execute(seconds=1.0)
+        third_screen = await screenshot_tool.execute()
+        third_path = output_dir / "03-after-tap.png"
+        _save_phone_screenshot(third_screen, third_path)
+        saved_paths.append(third_path)
+
+    return saved_paths
+
+
 
 # ============================================================================
 # Gateway / Server
@@ -713,8 +902,8 @@ def gateway_start(
     """Start the nanobot gateway in the background."""
     _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-    pid = _gateway_pid()
-    if pid is not None and _is_process_running(pid):
+    pid = _gateway_running_pid()
+    if pid is not None:
         console.print(f"[yellow]Gateway is already running (PID {pid})[/yellow]")
         raise typer.Exit(1)
 
@@ -757,37 +946,223 @@ def gateway_run(
 ):
     """Run the nanobot gateway in the current process."""
     _GATEWAY_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    if not _acquire_gateway_lock():
+        pid = _gateway_running_pid()
+        if pid is not None:
+            console.print(f"[yellow]Gateway is already running (PID {pid})[/yellow]")
+        else:
+            console.print("[yellow]Gateway is already running[/yellow]")
+        raise typer.Exit(1)
+
     _GATEWAY_PID_FILE.write_text(str(os.getpid()), encoding="utf-8")
     try:
         _run_gateway_service(port=port, workspace=workspace, verbose=verbose, config=config)
     finally:
         if _GATEWAY_PID_FILE.exists():
             _GATEWAY_PID_FILE.unlink()
+        _release_gateway_lock()
 
 
 @gateway_app.command("stop")
 def gateway_stop():
     """Stop the nanobot gateway."""
-    pid = _gateway_pid()
-    if pid is None or not _is_process_running(pid):
+    pid = _gateway_running_pid()
+    if pid is None:
         console.print("[yellow]Gateway is not running[/yellow]")
         raise typer.Exit(1)
 
-    os.kill(pid, signal.SIGTERM)
+    _stop_gateway_instance(pid)
     console.print(f"[green]Gateway stopped[/green] (PID {pid})")
 
 
 @gateway_app.command("status")
 def gateway_status():
     """Show gateway status."""
-    pid = _gateway_pid()
-    if pid is None or not _is_process_running(pid):
+    pid = _gateway_running_pid()
+    if pid is None:
         console.print("[yellow]Gateway is not running[/yellow]")
         raise typer.Exit(1)
 
     console.print(f"[green]Gateway is running[/green] (PID {pid})")
     console.print(f"[dim]Log: {_GATEWAY_LOG_FILE}[/dim]")
 
+
+@gateway_app.command("restart")
+def gateway_restart(
+    port: int | None = typer.Option(None, "--port", "-p", help="Gateway port"),
+    workspace: str | None = typer.Option(None, "--workspace", "-w", help="Workspace directory"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
+    config: str | None = typer.Option(None, "--config", "-c", help="Path to config file"),
+):
+    """Restart the nanobot gateway."""
+    pid = _gateway_running_pid()
+    if pid is not None:
+        _stop_gateway_instance(pid)
+        console.print(f"[green]Gateway stopped[/green] (PID {pid})")
+    else:
+        console.print("[yellow]Gateway is not running; starting a new process[/yellow]")
+
+    gateway_start(port=port, workspace=workspace, verbose=verbose, config=config)
+
+
+
+# ============================================================================
+# Phone Runtime Commands
+# ============================================================================
+
+
+phone_app = typer.Typer(help="Manage Android phone runtime and smoke tests", no_args_is_help=True)
+app.add_typer(phone_app, name="phone")
+
+
+@phone_app.command("doctor")
+def phone_doctor(
+    workspace: str | None = typer.Option(None, "--workspace", "-w", help="Workspace directory"),
+    config: str | None = typer.Option(None, "--config", "-c", help="Config file path"),
+    device_id: str | None = typer.Option(None, "--device-id", help="Explicit adb device ID"),
+):
+    """Check adb availability, connected devices, and optional ADB Keyboard status."""
+    from nanobot.agent.tools.phone.runtime import (
+        get_adb_version,
+        is_adb_keyboard_installed,
+        list_adb_devices,
+        resolve_adb_path,
+        resolve_adb_keyboard_apk_path,
+        select_operable_adb_device,
+    )
+
+    _, phone_config = _load_phone_runtime_config(config, workspace, device_id=device_id)
+    if phone_config.device_type != "adb":
+        console.print("[red]phone doctor currently supports only Android adb devices.[/red]")
+        raise typer.Exit(1)
+
+    try:
+        adb_path = resolve_adb_path(phone_config)
+        version = get_adb_version(phone_config)
+        devices = list_adb_devices(phone_config)
+        selected = select_operable_adb_device(phone_config)
+        keyboard_installed = is_adb_keyboard_installed(phone_config, device_id=selected.device_id)
+        keyboard_apk = resolve_adb_keyboard_apk_path(phone_config)
+    except Exception as exc:
+        console.print(f"[red]Phone doctor failed:[/red] {exc}")
+        raise typer.Exit(1) from exc
+
+    console.print(f"[green]ADB:[/green] {adb_path}")
+    console.print(f"[green]Version:[/green] {version}")
+
+    table = Table(title="ADB Devices")
+    table.add_column("Device ID")
+    table.add_column("Status")
+    table.add_column("Connection")
+    table.add_column("Model")
+    for device in devices:
+        marker = " *" if device.device_id == selected.device_id else ""
+        table.add_row(
+            f"{device.device_id}{marker}",
+            device.status,
+            device.connection_type,
+            device.model or "-",
+        )
+    console.print(table)
+
+    if keyboard_installed:
+        console.print("[green]ADB Keyboard:[/green] installed")
+    else:
+        console.print("[yellow]ADB Keyboard:[/yellow] not installed")
+        console.print(
+            "[dim]Tap/home/launch/screenshot can still run, but phone_type will fail until "
+            "`com.android.adbkeyboard/.AdbIME` is installed and enabled.[/dim]"
+        )
+    if keyboard_apk:
+        console.print(f"[green]ADB Keyboard APK:[/green] {keyboard_apk}")
+    else:
+        console.print("[yellow]ADB Keyboard APK:[/yellow] local installer not found")
+        console.print(
+            "[dim]If you want to use phone_type, place ADBKeyboard.apk under "
+            "`nanobot/vendor/android/adbkeyboard/` or set tools.phoneAgent.adbKeyboardApkPath.[/dim]"
+        )
+
+    console.print(f"[green]Selected device:[/green] {selected.device_id}")
+
+
+@phone_app.command("packages")
+def phone_packages(
+    workspace: str | None = typer.Option(None, "--workspace", "-w", help="Workspace directory"),
+    config: str | None = typer.Option(None, "--config", "-c", help="Config file path"),
+    device_id: str | None = typer.Option(None, "--device-id", help="Explicit adb device ID"),
+    keyword: str | None = typer.Option(None, "--keyword", help="Filter packages by substring"),
+):
+    """List installed Android packages on the selected adb device."""
+    from nanobot.agent.tools.phone.runtime import list_installed_android_packages, select_operable_adb_device
+
+    _, phone_config = _load_phone_runtime_config(config, workspace, device_id=device_id)
+    if phone_config.device_type != "adb":
+        console.print("[red]phone packages currently supports only Android adb devices.[/red]")
+        raise typer.Exit(1)
+
+    try:
+        selected = select_operable_adb_device(phone_config)
+        packages = list_installed_android_packages(phone_config, device_id=selected.device_id)
+    except Exception as exc:
+        console.print(f"[red]Listing packages failed:[/red] {exc}")
+        raise typer.Exit(1) from exc
+
+    if keyword:
+        lowered = keyword.lower()
+        packages = [package for package in packages if lowered in package.lower()]
+
+    console.print(f"[green]Selected device:[/green] {selected.device_id}")
+    if not packages:
+        console.print("[yellow]No packages matched.[/yellow]")
+        raise typer.Exit(0)
+
+    for package in packages:
+        console.print(package)
+
+
+@phone_app.command("smoke")
+def phone_smoke(
+    app_name: str = typer.Option("微信", "--app", help="App name to launch during the smoke test"),
+    tap_x: int = typer.Option(500, "--tap-x", min=0, max=999, help="Relative tap X coordinate"),
+    tap_y: int = typer.Option(500, "--tap-y", min=0, max=999, help="Relative tap Y coordinate"),
+    skip_tap: bool = typer.Option(False, "--skip-tap", help="Skip the final tap step"),
+    output_dir: str | None = typer.Option(None, "--output-dir", help="Directory used to save screenshots"),
+    workspace: str | None = typer.Option(None, "--workspace", "-w", help="Workspace directory"),
+    config: str | None = typer.Option(None, "--config", "-c", help="Config file path"),
+    device_id: str | None = typer.Option(None, "--device-id", help="Explicit adb device ID"),
+):
+    """Run a real-device smoke test through the current phone tools."""
+    loaded, phone_config = _load_phone_runtime_config(config, workspace, device_id=device_id)
+    if phone_config.device_type != "adb":
+        console.print("[red]phone smoke currently supports only Android adb devices.[/red]")
+        raise typer.Exit(1)
+
+    target_dir = (
+        Path(output_dir).expanduser().resolve()
+        if output_dir
+        else loaded.workspace_path / "phone-smoke"
+    )
+    console.print(f"[cyan]Running phone smoke test...[/cyan]")
+    console.print(f"[dim]Output dir: {target_dir}[/dim]")
+
+    try:
+        saved_paths = asyncio.run(
+            _run_phone_smoke_steps(
+                phone_config,
+                target_dir,
+                app_name,
+                tap_x,
+                tap_y,
+                perform_tap=not skip_tap,
+            )
+        )
+    except Exception as exc:
+        console.print(f"[red]Phone smoke failed:[/red] {exc}")
+        raise typer.Exit(1) from exc
+
+    console.print("[green]Phone smoke passed.[/green]")
+    for path in saved_paths:
+        console.print(f"[dim]Saved: {path}[/dim]")
 
 
 
@@ -838,6 +1213,7 @@ def agent(
         web_search_config=config.tools.web.search,
         web_proxy=config.tools.web.proxy or None,
         exec_config=config.tools.exec,
+        phone_config=config.tools.phone_agent,
         cron_service=cron,
         restrict_to_workspace=config.tools.restrict_to_workspace,
         mcp_servers=config.tools.mcp_servers,

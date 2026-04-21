@@ -11,7 +11,7 @@ from typer.testing import CliRunner
 
 from nanobot.bus.events import OutboundMessage
 from nanobot.cli.commands import _make_provider, app
-from nanobot.config.schema import Config
+from nanobot.config.schema import Config, PhoneAgentConfig
 from nanobot.providers.litellm_provider import LiteLLMProvider
 from nanobot.providers.openai_codex_provider import _strip_model_prefix
 from nanobot.providers.registry import find_by_model
@@ -484,11 +484,19 @@ def test_gateway_uses_workspace_from_config_by_default(monkeypatch, tmp_path: Pa
     config_file = tmp_path / "instance" / "config.json"
     config_file.parent.mkdir(parents=True)
     config_file.write_text("{}")
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
 
     config = Config()
     config.agents.defaults.workspace = str(tmp_path / "config-workspace")
     seen: dict[str, Path] = {}
 
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: True)
+    monkeypatch.setattr("nanobot.cli.commands._release_gateway_lock", lambda: seen.__setitem__("released", True))
     monkeypatch.setattr(
         "nanobot.config.loader.set_config_path",
         lambda path: seen.__setitem__("config_path", path),
@@ -508,18 +516,27 @@ def test_gateway_uses_workspace_from_config_by_default(monkeypatch, tmp_path: Pa
     assert isinstance(result.exception, _StopGatewayError)
     assert seen["config_path"] == config_file.resolve()
     assert seen["workspace"] == Path(config.agents.defaults.workspace)
+    assert seen["released"] is True
 
 
 def test_gateway_workspace_option_overrides_config(monkeypatch, tmp_path: Path) -> None:
     config_file = tmp_path / "instance" / "config.json"
     config_file.parent.mkdir(parents=True)
     config_file.write_text("{}")
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
 
     config = Config()
     config.agents.defaults.workspace = str(tmp_path / "config-workspace")
     override = tmp_path / "override-workspace"
     seen: dict[str, Path] = {}
 
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: True)
+    monkeypatch.setattr("nanobot.cli.commands._release_gateway_lock", lambda: seen.__setitem__("released", True))
     monkeypatch.setattr("nanobot.config.loader.set_config_path", lambda _path: None)
     monkeypatch.setattr("nanobot.config.loader.load_config", lambda _path=None: config)
     monkeypatch.setattr(
@@ -539,17 +556,26 @@ def test_gateway_workspace_option_overrides_config(monkeypatch, tmp_path: Path) 
     assert isinstance(result.exception, _StopGatewayError)
     assert seen["workspace"] == override
     assert config.workspace_path == override
+    assert seen["released"] is True
 
 
 def test_gateway_uses_config_directory_for_cron_store(monkeypatch, tmp_path: Path) -> None:
     config_file = tmp_path / "instance" / "config.json"
     config_file.parent.mkdir(parents=True)
     config_file.write_text("{}")
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
 
     config = Config()
     config.agents.defaults.workspace = str(tmp_path / "config-workspace")
     seen: dict[str, Path] = {}
 
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: True)
+    monkeypatch.setattr("nanobot.cli.commands._release_gateway_lock", lambda: seen.__setitem__("released", True))
     monkeypatch.setattr("nanobot.config.loader.set_config_path", lambda _path: None)
     monkeypatch.setattr("nanobot.config.loader.load_config", lambda _path=None: config)
     monkeypatch.setattr("nanobot.config.paths.get_cron_dir", lambda: config_file.parent / "cron")
@@ -569,16 +595,26 @@ def test_gateway_uses_config_directory_for_cron_store(monkeypatch, tmp_path: Pat
 
     assert isinstance(result.exception, _StopGatewayError)
     assert seen["cron_store"] == config_file.parent / "cron" / "jobs.json"
+    assert seen["released"] is True
 
 
 def test_gateway_uses_configured_port_when_cli_flag_is_missing(monkeypatch, tmp_path: Path) -> None:
     config_file = tmp_path / "instance" / "config.json"
     config_file.parent.mkdir(parents=True)
     config_file.write_text("{}")
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
 
     config = Config()
     config.gateway.port = 18791
 
+    seen: dict[str, bool] = {}
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: True)
+    monkeypatch.setattr("nanobot.cli.commands._release_gateway_lock", lambda: seen.__setitem__("released", True))
     monkeypatch.setattr("nanobot.config.loader.set_config_path", lambda _path: None)
     monkeypatch.setattr("nanobot.config.loader.load_config", lambda _path=None: config)
     monkeypatch.setattr("nanobot.cli.commands.sync_workspace_templates", lambda _path: None)
@@ -591,16 +627,26 @@ def test_gateway_uses_configured_port_when_cli_flag_is_missing(monkeypatch, tmp_
 
     assert isinstance(result.exception, _StopGatewayError)
     assert "port 18791" in result.stdout
+    assert seen["released"] is True
 
 
 def test_gateway_cli_port_overrides_configured_port(monkeypatch, tmp_path: Path) -> None:
     config_file = tmp_path / "instance" / "config.json"
     config_file.parent.mkdir(parents=True)
     config_file.write_text("{}")
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
 
     config = Config()
     config.gateway.port = 18791
 
+    seen: dict[str, bool] = {}
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: True)
+    monkeypatch.setattr("nanobot.cli.commands._release_gateway_lock", lambda: seen.__setitem__("released", True))
     monkeypatch.setattr("nanobot.config.loader.set_config_path", lambda _path: None)
     monkeypatch.setattr("nanobot.config.loader.load_config", lambda _path=None: config)
     monkeypatch.setattr("nanobot.cli.commands.sync_workspace_templates", lambda _path: None)
@@ -613,16 +659,20 @@ def test_gateway_cli_port_overrides_configured_port(monkeypatch, tmp_path: Path)
 
     assert isinstance(result.exception, _StopGatewayError)
     assert "port 18792" in result.stdout
+    assert seen["released"] is True
 
 
 def test_gateway_start_spawns_background_process(monkeypatch, tmp_path: Path) -> None:
     log_dir = tmp_path / "logs" / "gateway"
     log_file = log_dir / "gateway.log"
     pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
 
     monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
     monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_FILE", log_file)
     monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._gateway_running_pid", lambda: None)
 
     seen: dict[str, object] = {}
 
@@ -650,12 +700,12 @@ def test_gateway_start_spawns_background_process(monkeypatch, tmp_path: Path) ->
 
 def test_gateway_stop_signals_running_process(monkeypatch, tmp_path: Path) -> None:
     log_dir = tmp_path / "logs" / "gateway"
-    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
     log_dir.mkdir(parents=True)
-    pid_file.write_text("12345", encoding="utf-8")
 
-    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
-    monkeypatch.setattr("nanobot.cli.commands._is_process_running", lambda pid: pid == 12345)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._gateway_running_pid", lambda: 12345)
+    monkeypatch.setattr("nanobot.cli.commands._is_process_running", lambda pid: False)
 
     seen: dict[str, int] = {}
 
@@ -675,16 +725,217 @@ def test_gateway_stop_signals_running_process(monkeypatch, tmp_path: Path) -> No
 def test_gateway_status_reports_running_process(monkeypatch, tmp_path: Path) -> None:
     log_dir = tmp_path / "logs" / "gateway"
     log_file = log_dir / "gateway.log"
-    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
     log_dir.mkdir(parents=True)
-    pid_file.write_text("12345", encoding="utf-8")
 
     monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_FILE", log_file)
-    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
-    monkeypatch.setattr("nanobot.cli.commands._is_process_running", lambda pid: pid == 12345)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._gateway_running_pid", lambda: 12345)
 
     result = runner.invoke(app, ["gateway", "status"])
 
     assert result.exit_code == 0
     assert "Gateway is running" in result.stdout
     assert str(log_file) in result.stdout.replace("\n", "")
+
+
+def test_gateway_restart_stops_then_starts_with_same_options(monkeypatch, tmp_path: Path) -> None:
+    log_dir = tmp_path / "logs" / "gateway"
+    log_file = log_dir / "gateway.log"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
+    log_dir.mkdir(parents=True)
+
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_FILE", log_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+
+    seen: dict[str, object] = {"running_checks": []}
+
+    pids = iter([12345, None])
+
+    def _fake_gateway_running_pid() -> int | None:
+        pid = next(pids)
+        seen["running_checks"].append(pid)
+        return pid
+
+    def _fake_kill(pid: int, sig: int) -> None:
+        seen["killed"] = (pid, sig)
+
+    class _Proc:
+        pid = 54321
+
+    def _fake_popen(cmd, **kwargs):
+        seen["cmd"] = cmd
+        seen["kwargs"] = kwargs
+        return _Proc()
+
+    monkeypatch.setattr("nanobot.cli.commands._gateway_running_pid", _fake_gateway_running_pid)
+    monkeypatch.setattr("nanobot.cli.commands.os.kill", _fake_kill)
+    monkeypatch.setattr("nanobot.cli.commands.subprocess.Popen", _fake_popen)
+    monkeypatch.setattr("nanobot.cli.commands._is_process_running", lambda pid: False)
+    monkeypatch.setattr("nanobot.cli.commands.time.sleep", lambda _: None)
+
+    result = runner.invoke(
+        app,
+        ["gateway", "restart", "--port", "18792", "--verbose", "--config", "/tmp/config.json"],
+    )
+
+    assert result.exit_code == 0
+    assert seen["killed"] == (12345, signal.SIGTERM)
+    assert seen["cmd"] == [
+        sys.executable,
+        "-m",
+        "nanobot",
+        "gateway",
+        "run",
+        "--port",
+        "18792",
+        "--verbose",
+        "--config",
+        "/tmp/config.json",
+    ]
+    assert seen["kwargs"]["stdin"] == subprocess.DEVNULL
+    assert seen["kwargs"]["start_new_session"] is True
+    assert "Gateway stopped" in result.stdout
+    assert "Gateway started" in result.stdout
+
+
+def test_gateway_run_exits_when_lock_is_held(monkeypatch, tmp_path: Path) -> None:
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
+
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: False)
+    monkeypatch.setattr("nanobot.cli.commands._gateway_running_pid", lambda: 12345)
+
+    result = runner.invoke(app, ["gateway", "run"])
+
+    assert result.exit_code == 1
+    assert "Gateway is already running" in result.stdout
+
+
+def test_gateway_run_acquires_and_releases_lock(monkeypatch, tmp_path: Path) -> None:
+    log_dir = tmp_path / "logs" / "gateway"
+    pid_file = log_dir / "gateway.pid"
+    lock_file = log_dir / "gateway.lock"
+
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOG_DIR", log_dir)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_PID_FILE", pid_file)
+    monkeypatch.setattr("nanobot.cli.commands._GATEWAY_LOCK_FILE", lock_file)
+
+    seen: dict[str, object] = {}
+
+    monkeypatch.setattr("nanobot.cli.commands._acquire_gateway_lock", lambda: True)
+    monkeypatch.setattr("nanobot.cli.commands._release_gateway_lock", lambda: seen.setdefault("released", True))
+    monkeypatch.setattr("nanobot.cli.commands._run_gateway_service", lambda **kwargs: seen.setdefault("kwargs", kwargs))
+
+    result = runner.invoke(app, ["gateway", "run", "--port", "18790"])
+
+    assert result.exit_code == 0
+    assert seen["kwargs"] == {
+        "port": 18790,
+        "workspace": None,
+        "verbose": False,
+        "config": None,
+    }
+    assert seen["released"] is True
+    assert not pid_file.exists()
+
+
+def test_phone_doctor_reports_selected_device(monkeypatch) -> None:
+    phone_config = PhoneAgentConfig(enable=True, device_type="adb")
+
+    monkeypatch.setattr(
+        "nanobot.cli.commands._load_phone_runtime_config",
+        lambda config, workspace, device_id=None: (Config(), phone_config),
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.resolve_adb_path",
+        lambda config: Path("/tmp/adb"),
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.get_adb_version",
+        lambda config: "Android Debug Bridge version 1.0.41",
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.list_adb_devices",
+        lambda config: [
+            MagicMock(device_id="serial-1", status="device", connection_type="usb", model="Pixel"),
+        ],
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.select_operable_adb_device",
+        lambda config: MagicMock(device_id="serial-1", status="device", connection_type="usb", model="Pixel"),
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.is_adb_keyboard_installed",
+        lambda config, device_id: True,
+    )
+
+    result = runner.invoke(app, ["phone", "doctor"])
+
+    assert result.exit_code == 0
+    assert "ADB:" in result.stdout
+    assert "serial-1" in result.stdout
+    assert "ADB Keyboard:" in result.stdout
+    assert "Selected device:" in result.stdout
+
+
+def test_phone_smoke_runs_helper_and_prints_saved_paths(monkeypatch, tmp_path: Path) -> None:
+    loaded = Config()
+    loaded.agents.defaults.workspace = str(tmp_path / "workspace")
+    phone_config = PhoneAgentConfig(enable=True, device_type="adb")
+    saved = [
+        tmp_path / "workspace" / "phone-smoke" / "01-before-home.png",
+        tmp_path / "workspace" / "phone-smoke" / "02-after-launch.png",
+    ]
+
+    monkeypatch.setattr(
+        "nanobot.cli.commands._load_phone_runtime_config",
+        lambda config, workspace, device_id=None: (loaded, phone_config),
+    )
+    monkeypatch.setattr(
+        "nanobot.cli.commands._run_phone_smoke_steps",
+        AsyncMock(return_value=saved),
+    )
+
+    result = runner.invoke(app, ["phone", "smoke", "--skip-tap"])
+
+    assert result.exit_code == 0
+    assert "Phone smoke passed." in result.stdout
+    normalized_stdout = result.stdout.replace("\n", "")
+    assert str(saved[0]) in normalized_stdout
+    assert str(saved[1]) in normalized_stdout
+
+
+def test_phone_packages_lists_filtered_packages(monkeypatch) -> None:
+    phone_config = PhoneAgentConfig(enable=True, device_type="adb")
+
+    monkeypatch.setattr(
+        "nanobot.cli.commands._load_phone_runtime_config",
+        lambda config, workspace, device_id=None: (Config(), phone_config),
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.select_operable_adb_device",
+        lambda config: MagicMock(device_id="serial-1", status="device", connection_type="usb", model="Pixel"),
+    )
+    monkeypatch.setattr(
+        "nanobot.agent.tools.phone.runtime.list_installed_android_packages",
+        lambda config, device_id: [
+            "com.tencent.mm",
+            "com.douban.frodo",
+            "com.eg.android.AlipayGphone",
+        ],
+    )
+
+    result = runner.invoke(app, ["phone", "packages", "--keyword", "douban"])
+
+    assert result.exit_code == 0
+    assert "Selected device:" in result.stdout
+    assert "com.douban.frodo" in result.stdout
+    assert "com.tencent.mm" not in result.stdout

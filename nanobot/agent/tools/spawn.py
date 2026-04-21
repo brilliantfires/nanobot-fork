@@ -33,6 +33,8 @@ class SpawnTool(Tool):
             "Spawn a subagent to handle a task in the background. "
             "Use this for complex or time-consuming tasks that can run independently. "
             "The subagent will complete the task and report back when done. "
+            "If the task requires operating a connected phone UI, prefer the dedicated "
+            "'phone_agent' tool instead of this generic spawn tool. "
             "For deliverables or existing projects, inspect the workspace first "
             "and use a dedicated subdirectory when helpful."
         )

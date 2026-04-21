@@ -1,164 +1,1995 @@
+2026-04-02 12:02:09.080 | INFO     | nanobot.agent.loop:_process_message:640 - Processing message from qq:1853BB7E733B5564959CCD112D5825E5: 打开豆瓣，搜索逐玉电视剧，然后看看最新的剧评，汇报一下
+[92m12:02:09 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:02:14.438 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: phone_agent({"task": "打开豆瓣应用，搜索\"逐玉\"电视剧，查看最新的剧评，然后汇报结果", "label": "豆瓣搜索逐玉电视剧剧评"})
+2026-04-02 12:02:14.438 | INFO     | nanobot.agent.subagent:spawn:110 - Spawned subagent [f80b7430] with profile [phone]: 豆瓣搜索逐玉电视剧剧评
+[92m12:02:14 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:02:14.441 | INFO     | nanobot.agent.subagent:_run_subagent:131 - Subagent [f80b7430] starting task with profile [phone]: 豆瓣搜索逐玉电视剧剧评
+2026-04-02 12:02:19.967 | INFO     | nanobot.agent.loop:_process_message:716 - Response to qq:1853BB7E733B5564959CCD112D5825E5: 好的！我已经启动了手机后台任务来执行你的请求。phone-agent会：
+
+1. 打开豆瓣应用
+2. 搜索"逐玉"电视剧
+3. 查看最新的剧评
+4. 将结果汇报回来
+
+任务已经在后台执行中。当phone-agent完成任务后，它会自动将搜索...
+2026-04-02 12:02:50.067 | INFO     | nanobot.agent.subagent:_run_subagent:199 - Subagent [f80b7430] completed successfully with profile [phone]
+2026-04-02 12:02:50.068 | INFO     | nanobot.agent.loop:_process_message:620 - Processing system message from subagent
+[92m12:02:50 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:09.447 | INFO     | nanobot.agent.loop:_process_message:640 - Processing message from qq:1853BB7E733B5564959CCD112D5825E5: 继续
+[92m12:03:09 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:13.639 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: phone_agent({"task": "继续刚才的操作：在已打开的豆瓣应用中，点击搜索框，搜索\"逐玉\"电视剧，查看搜索结果和最新的剧评", "label": "继续搜索逐玉电视剧剧评"})
+[92m12:03:13 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:13.640 | INFO     | nanobot.agent.subagent:spawn:110 - Spawned subagent [8f663bc6] with profile [phone]: 继续搜索逐玉电视剧剧评
+2026-04-02 12:03:13.640 | INFO     | nanobot.agent.subagent:_run_subagent:131 - Subagent [8f663bc6] starting task with profile [phone]: 继续搜索逐玉电视剧剧评
+2026-04-02 12:03:17.718 | INFO     | nanobot.agent.loop:_process_message:716 - Response to qq:1853BB7E733B5564959CCD112D5825E5: 好的！我已经让手机agent继续执行任务。这次它会：
+
+1. 在已打开的豆瓣应用中点击搜索框
+2. 搜索"逐玉"电视剧
+3. 查看搜索结果
+4. 查看最新的剧评
+
+任务已经在后台执行中。当phone-agent完成任务后，它会自动将搜索结果...
+2026-04-02 12:03:22.015 | INFO     | nanobot.agent.subagent:_run_subagent:199 - Subagent [8f663bc6] completed successfully with profile [phone]
+2026-04-02 12:03:22.015 | INFO     | nanobot.agent.loop:_process_message:620 - Processing system message from subagent
+[92m12:03:22 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:34.099 | INFO     | nanobot.agent.loop:_process_message:640 - Processing message from qq:1853BB7E733B5564959CCD112D5825E5: 继续
+[92m12:03:34 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:37.685 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_search({"query": "逐玉 电视剧 豆瓣 评价 最新剧评", "count": 5})
+2026-04-02 12:03:37.685 | WARNING  | nanobot.agent.tools.web:_search_brave:115 - BRAVE_API_KEY not set, falling back to DuckDuckGo
+response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%E9%80%90%E7%8E%89%20%E7%94%B5%E8%A7%86%E5%89%A7%20%E8%B1%86%E7%93%A3%20%E8%AF%84%E4%BB%B7%20%E6%9C%80%E6%96%B0%E5%89%A7%E8%AF%84 200
+response: https://grokipedia.com/api/typeahead?query=%E9%80%90%E7%8E%89+%E7%94%B5%E8%A7%86%E5%89%A7+%E8%B1%86%E7%93%A3+%E8%AF%84%E4%BB%B7+%E6%9C%80%E6%96%B0%E5%89%A7%E8%AF%84&limit=1 200
+response: https://html.duckduckgo.com/html/ 200
+[92m12:03:40 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:45.058 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://movie.douban.com/subject/36554061/comments?sort=new_score&status=F", "extractMode": "markdown"})
+[92m12:03:48 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:52.124 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://movie.douban.com/subject/36554061/", "extractMode": "markdown"})
+[92m12:03:55 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:03:58.781 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_search({"query": "\"逐玉\" 剧评 2026 最新评价 观众反馈", "count": 5})
+2026-04-02 12:03:58.781 | WARNING  | nanobot.agent.tools.web:_search_brave:115 - BRAVE_API_KEY not set, falling back to DuckDuckGo
+response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%22%E9%80%90%E7%8E%89%22%20%E5%89%A7%E8%AF%84%202026%20%E6%9C%80%E6%96%B0%E8%AF%84%E4%BB%B7%20%E8%A7%82%E4%BC%97%E5%8F%8D%E9%A6%88 200
+response: https://grokipedia.com/api/typeahead?query=%22%E9%80%90%E7%8E%89%22+%E5%89%A7%E8%AF%84+2026+%E6%9C%80%E6%96%B0%E8%AF%84%E4%BB%B7+%E8%A7%82%E4%BC%97%E5%8F%8D%E9%A6%88&limit=1 200
+response: https://html.duckduckgo.com/html/ 200
+[92m12:04:01 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+/Users/Mac/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/multiprocessing/resource_tracker.py:400: UserWarning: resource_tracker: There appear to be 8 leaked semaphore objects to clean up at shutdown: {'/mp-1a44_zje', '/mp-bjhfn7ym', '/mp-6ibnzzcp', '/mp-xc1tfsz0', '/mp-6we53080', '/mp-_0jpqwbu', '/mp-iytd6df9', '/mp-iiohrvnq'}
+  warnings.warn(
 🐈 Starting nanobot gateway version 0.1.4.post5 on port 18790...
+2026-04-02 12:04:05.998 | INFO     | nanobot.agent.subagent:register_profile:63 - Registering subagent profile: default
+2026-04-02 12:04:06.005 | INFO     | nanobot.agent.subagent:register_profile:63 - Registering subagent profile: phone
 ✓ Channels enabled: qq
-2026-03-28 21:01:51.196 | INFO     | nanobot.channels.manager:_init_channels:54 - QQ channel enabled
+2026-04-02 12:04:06.309 | INFO     | nanobot.channels.manager:_init_channels:54 - QQ channel enabled
 ✓ Heartbeat: every 1800s
-2026-03-28 21:01:51.198 | INFO     | nanobot.cron.service:_load_store:85 - Cron: jobs.json modified externally, reloading
-2026-03-28 21:01:51.199 | INFO     | nanobot.cron.service:start:202 - Cron service started with 0 jobs
+2026-04-02 12:04:06.311 | INFO     | nanobot.cron.service:_load_store:85 - Cron: jobs.json modified externally, reloading
+2026-04-02 12:04:06.311 | INFO     | nanobot.cron.service:start:202 - Cron service started with 0 jobs
+2026-04-02 12:04:06.311 | INFO     | nanobot.heartbeat.service:start:122 - Heartbeat started (every 1800s)
 [botpy] 登录机器人账号中...
-2026-03-28 21:01:51.199 | INFO     | nanobot.heartbeat.service:start:122 - Heartbeat started (every 1800s)
-2026-03-28 21:01:51.199 | INFO     | nanobot.agent.loop:run:333 - Agent loop started
-2026-03-28 21:01:51.199 | INFO     | nanobot.channels.manager:start_all:87 - Starting qq channel...
-2026-03-28 21:01:51.200 | INFO     | nanobot.channels.manager:_dispatch_outbound:115 - Outbound dispatcher started
-2026-03-28 21:01:51.200 | INFO     | nanobot.channels.qq:start:97 - QQ bot started (C2C & Group supported)
-[botpy] access_token expires_in 5523
+2026-04-02 12:04:06.311 | INFO     | nanobot.agent.loop:run:486 - Agent loop started
+2026-04-02 12:04:06.311 | INFO     | nanobot.channels.manager:start_all:87 - Starting qq channel...
+2026-04-02 12:04:06.311 | INFO     | nanobot.channels.manager:_dispatch_outbound:115 - Outbound dispatcher started
+2026-04-02 12:04:06.311 | INFO     | nanobot.channels.qq:start:97 - QQ bot started (C2C & Group supported)
+[botpy] access_token expires_in 1876
 [botpy] 程序启动...
 [botpy] 最大并发连接数: 1, 启动会话数: 1
 [botpy] 会话启动中...
 [botpy] 启动中...
 [botpy] 鉴权中...
-[botpy] 机器人「Nano-Bot」启动成功！
+[botpy] 机器人「Nano-Fork-M4」启动成功！
 [botpy] 心跳维持启动...
-2026-03-28 21:01:52.263 | INFO     | nanobot.channels.qq:on_ready:40 - QQ bot ready: Nano-Bot
-2026-03-28 21:02:03.330 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 你好
-[92m21:02:06 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:04:07.335 | INFO     | nanobot.channels.qq:on_ready:40 - QQ bot ready: Nano-Fork-M4
+2026-04-02 12:04:57.855 | INFO     | nanobot.agent.loop:_process_message:640 - Processing message from qq:1853BB7E733B5564959CCD112D5825E5: 打开豆瓣，搜索逐玉电视剧，然后看看最新的剧评，汇报一下
+[92m12:04:57 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:02:11.754 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 你好！👋 很高兴见到你！
-
-我是 nanobot 🐈，你的个人AI助手。现在是 2026年3月28日 21:02（星期六），我在QQ频道与你对话。
-
-我可以帮助你处理各种任务，比如：
-- 📝 文件读写和编辑
-- 🔍 网络搜索和信息获取  
-...
-2026-03-28 21:02:27.965 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 今天武汉天气如何？
-[92m21:02:28 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:03.838 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: phone_agent({"task": "重新开始：打开豆瓣应用，搜索\"逐玉\"电视剧，查看搜索结果，然后查看最新的剧评并汇报", "label": "重新搜索逐玉电视剧剧评"})
+2026-04-02 12:05:03.839 | INFO     | nanobot.agent.subagent:spawn:110 - Spawned subagent [b7285b53] with profile [phone]: 重新搜索逐玉电视剧剧评
+[92m12:05:03 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:02:31.760 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "curl -s \"wttr.in/Wuhan?format=3\""})
-[92m21:02:33 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:03.841 | INFO     | nanobot.agent.subagent:_run_subagent:131 - Subagent [b7285b53] starting task with profile [phone]: 重新搜索逐玉电视剧剧评
+2026-04-02 12:05:14.760 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_search({"query": "逐玉 电视剧 豆瓣 评价 剧评", "count": 5})
+2026-04-02 12:05:14.761 | WARNING  | nanobot.agent.tools.web:_search_brave:115 - BRAVE_API_KEY not set, falling back to DuckDuckGo
+response: https://grokipedia.com/api/typeahead?query=%E9%80%90%E7%8E%89+%E7%94%B5%E8%A7%86%E5%89%A7+%E8%B1%86%E7%93%A3+%E8%AF%84%E4%BB%B7+%E5%89%A7%E8%AF%84&limit=1 200
+response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%E9%80%90%E7%8E%89%20%E7%94%B5%E8%A7%86%E5%89%A7%20%E8%B1%86%E7%93%A3%20%E8%AF%84%E4%BB%B7%20%E5%89%A7%E8%AF%84 200
+response: https://www.google.com/search?q=%E9%80%90%E7%8E%89+%E7%94%B5%E8%A7%86%E5%89%A7+%E8%B1%86%E7%93%A3+%E8%AF%84%E4%BB%B7+%E5%89%A7%E8%AF%84&filter=1&start=0&hl=en-US&lr=lang_en&cr=countryUS 200
+[92m12:05:16 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:02:37.860 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "curl -s \"wttr.in/Wuhan?format=%l:+%c+%t+%h+%w\""})
-[92m21:02:38 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:20.380 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_search({"query": "site:douban.com 逐玉 电视剧", "count": 5})
+2026-04-02 12:05:20.381 | WARNING  | nanobot.agent.tools.web:_search_brave:115 - BRAVE_API_KEY not set, falling back to DuckDuckGo
+response: https://grokipedia.com/api/typeahead?query=site%3Adouban.com+%E9%80%90%E7%8E%89+%E7%94%B5%E8%A7%86%E5%89%A7&limit=1 200
+response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=site%3Adouban.com%20%E9%80%90%E7%8E%89%20%E7%94%B5%E8%A7%86%E5%89%A7 200
+response: https://www.mojeek.com/search?q=site%3Adouban.com+%E9%80%90%E7%8E%89+%E7%94%B5%E8%A7%86%E5%89%A7 200
+response: https://search.brave.com/search?q=site%3Adouban.com+%E9%80%90%E7%8E%89+%E7%94%B5%E8%A7%86%E5%89%A7&source=web 200
+[92m12:05:23 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:02:42.206 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "curl -s \"wttr.in/Wuhan?1\""})
-[92m21:02:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:26.552 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://m.douban.com/movie/subject/36554061/"})
+[92m12:05:33 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:02:52.504 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 根据查询结果，今天武汉的天气情况如下：
-
-## 🌤️ 武汉今日天气（2026年3月28日）
-
-**当前天气**：
-- **温度**：20°C
-- **天气状况**：晴朗 ☀️
-- **湿度**：68%
-- **风速**：9 km/h（北风 ...
-2026-03-28 21:11:52.364 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 检查有几个skill？
-[92m21:11:52 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:36.879 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://movie.douban.com/review/17493089/"})
+ruthless removal did not work. 
+[92m12:05:37 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:11:57.602 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "ls -la /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/"})
-[92m21:11:57 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:41.152 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_search({"query": "\"逐玉\" 电视剧 2026 评价 评分", "count": 5})
+2026-04-02 12:05:41.153 | WARNING  | nanobot.agent.tools.web:_search_brave:115 - BRAVE_API_KEY not set, falling back to DuckDuckGo
+Error in engine grokipedia: DDGSException("ConnectError: ConnectError('error sending request for url (https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%22%E9%80%90%E7%8E%89%22%20%E7%94%B5%E8%A7%86%E5%89%A7%202026%20%E8%AF%84%E4%BB%B7%20%E8%AF%84%E5%88%86)', 'https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%22%E9%80%90%E7%8E%89%22%20%E7%94%B5%E8%A7%86%E5%89%A7%202026%20%E8%AF%84%E4%BB%B7%20%E8%AF%84%E5%88%86')")
+response: https://grokipedia.com/api/typeahead?query=%22%E9%80%90%E7%8E%89%22+%E7%94%B5%E8%A7%86%E5%89%A7+2026+%E8%AF%84%E4%BB%B7+%E8%AF%84%E5%88%86&limit=1 200
+response: https://www.mojeek.com/search?q=%22%E9%80%90%E7%8E%89%22+%E7%94%B5%E8%A7%86%E5%89%A7+2026+%E8%AF%84%E4%BB%B7+%E8%AF%84%E5%88%86 200
+[92m12:05:43 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:12:03.160 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "find /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/ -name \"SKILL.md\" | wc -l"})
-[92m21:12:03 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:46.902 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_search({"query": "电视剧《逐玉》 张凌赫 田曦薇 评价", "count": 5})
+2026-04-02 12:05:46.902 | WARNING  | nanobot.agent.tools.web:_search_brave:115 - BRAVE_API_KEY not set, falling back to DuckDuckGo
+response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%E7%94%B5%E8%A7%86%E5%89%A7%E3%80%8A%E9%80%90%E7%8E%89%E3%80%8B%20%E5%BC%A0%E5%87%8C%E8%B5%AB%20%E7%94%B0%E6%9B%A6%E8%96%87%20%E8%AF%84%E4%BB%B7 200
+response: https://grokipedia.com/api/typeahead?query=%E7%94%B5%E8%A7%86%E5%89%A7%E3%80%8A%E9%80%90%E7%8E%89%E3%80%8B+%E5%BC%A0%E5%87%8C%E8%B5%AB+%E7%94%B0%E6%9B%A6%E8%96%87+%E8%AF%84%E4%BB%B7&limit=1 200
+response: https://www.mojeek.com/search?q=%E7%94%B5%E8%A7%86%E5%89%A7%E3%80%8A%E9%80%90%E7%8E%89%E3%80%8B+%E5%BC%A0%E5%87%8C%E8%B5%AB+%E7%94%B0%E6%9B%A6%E8%96%87+%E8%AF%84%E4%BB%B7 200
+response: https://search.brave.com/search?q=%E7%94%B5%E8%A7%86%E5%89%A7%E3%80%8A%E9%80%90%E7%8E%89%E3%80%8B+%E5%BC%A0%E5%87%8C%E8%B5%AB+%E7%94%B0%E6%9B%A6%E8%96%87+%E8%AF%84%E4%BB%B7&source=web 200
+[92m12:05:51 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:12:06.918 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "find /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/ -name \"SKILL.md\" -exec basename {} \\; | sort"})
-[92m21:12:07 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:05:54.372 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://www.zhihu.com/question/2013320822186537987"})
+[92m12:06:11 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:12:10.936 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "find /Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/ -name \"SKILL.md\" -exec dirname {} \\; | xargs -I {} basename {} | sort"})
-[92m21:12:11 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:06:14.357 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://news.qq.com/rain/a/20260310A050QH00"})
+[92m12:06:15 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:12:23.653 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 根据检查结果，当前共有 **9个技能**：
-
-## 📋 技能列表
-
-### ✅ 已安装且可用的技能（6个）：
-1. **memory** - 记忆系统
-2. **clawhub** - 技能库搜索和安装  
-3. **skill-creat...
-2026-03-28 21:25:47.106 | INFO     | nanobot.agent.loop:_process_message:487 - Processing message from qq:AB301AB735593BF09D269E8EA2DC66D5: 使用网易爆米花，看看我的库里面有哪些影片
-[92m21:25:47 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:06:19.959 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: web_fetch({"url": "https://www.163.com/dy/article/KON1I1SI0517AG0Q.html"})
+[92m12:06:36 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:25:51.452 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: read_file({"path": "/Users/yue/工作区/CodeTemp/nanobot/nanobot/skills/netease-baomihua-player/SKILL.md"})
-[92m21:25:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:06:55.210 | INFO     | nanobot.agent.subagent:_run_subagent:199 - Subagent [b7285b53] completed successfully with profile [phone]
+2026-04-02 12:06:57.109 | INFO     | nanobot.agent.loop:_process_message:716 - Response to qq:1853BB7E733B5564959CCD112D5825E5: 基于我搜索到的信息，我来为你总结一下《逐玉》电视剧的最新剧评情况：
+
+## 《逐玉》电视剧最新剧评汇总
+
+### 基本信息
+- **剧名**：《逐玉》
+- **主演**：张凌赫、田曦薇
+- **播出时间**：2026年3月首播
+- **播出...
+2026-04-02 12:06:57.120 | INFO     | nanobot.agent.loop:_process_message:620 - Processing system message from subagent
+[92m12:06:57 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:25:56.799 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI check-install"})
-[92m21:25:56 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:27:40.897 | INFO     | nanobot.agent.loop:_process_message:640 - Processing message from qq:1853BB7E733B5564959CCD112D5825E5: 请启动一个后台通用子 agent，检查 nanobot/tests 目录下所有与 phone 相关的测试文件，汇总每个文件主要覆盖了什么，并在完成后告诉我。不要...
+[92m12:27:40 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:26:01.028 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI list-filter-sources"})
-[92m21:26:01 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:27:47.434 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: spawn({"task": "检查nanobot/tests目录下所有与phone相关的测试文件，汇总每个文件主要覆盖了什么。具体步骤：\n1. 首先定位nanobot/tests目录\n2. 查找所有包含\"phone\"关键词的测试文件（包括文件名或路径中包含phone的文件）\n3. 对每个找到的文件，读取其内容并分析主要测试内容\n4. 汇总每个文件的主要覆盖范围\n5. 完成后汇报结果\n\n注意)
+2026-04-02 12:27:47.435 | INFO     | nanobot.agent.subagent:spawn:110 - Spawned subagent [c118020c] with profile [default]: 检查phone相关测试文件
+[92m12:27:47 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:26:05.850 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI filter-bmh-media --page 1 --page-size 20"})
-[92m21:26:06 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:27:47.437 | INFO     | nanobot.agent.subagent:_run_subagent:131 - Subagent [c118020c] starting task with profile [default]: 检查phone相关测试文件
+[92m12:27:47 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:26:10.488 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI filter-bmh-media --page 2 --page-size 20"})
-[92m21:26:10 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 12:27:51.382 | INFO     | nanobot.agent.loop:_process_message:716 - Response to qq:1853BB7E733B5564959CCD112D5825E5: 好的！我已经启动了一个后台子agent来检查nanobot/tests目录下所有与phone相关的测试文件。它会：
+
+1. 定位nanobot/tests目录
+2. 查找所有包含"phone"关键词的测试文件
+3. 分析每个文件的主要测试内...
+[92m12:27:52 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:26:15.367 | INFO     | nanobot.agent.loop:_run_agent_loop:298 - Tool call: exec({"command": "BMH_CLI=\"/Applications/网易爆米花.app/Contents/MacOS/bmh\" && $BMH_CLI filter-bmh-media --page 3 --page-size 20"})
-[92m21:26:15 - LiteLLM:INFO[0m: utils.py:3995 - 
+[92m12:27:55 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
-2026-03-28 21:26:45.938 | INFO     | nanobot.agent.loop:_process_message:563 - Response to qq:AB301AB735593BF09D269E8EA2DC66D5: 根据查询结果，我来为你整理网易爆米花媒体库中的影片信息：
+[92m12:28:00 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
 
-## 🎬 你的网易爆米花媒体库影片列表
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:04 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
 
-### 📊 统计信息
-- **总影片数**：40部（第1页20部 + 第2页20部）
-- **媒体类型**：电视剧（剧集）和电影
-- **...
-2026-03-28 21:31:51.155 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
-[92m21:31:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:08 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:12 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:17 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:21 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:26 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:31 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:35 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:41 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:46 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+[92m12:28:49 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:28:54.318 | INFO     | nanobot.agent.subagent:_run_subagent:199 - Subagent [c118020c] completed successfully with profile [default]
+2026-04-02 12:28:54.318 | INFO     | nanobot.agent.loop:_process_message:620 - Processing system message from subagent
+[92m12:28:54 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:28:58.821 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: exec({"command": "find /Users/Mac/工作区/CodeTemp/nanobot -type f -name \"*phone*\" -o -path \"*/phone/*\" | grep -i test | head -20"})
+[92m12:28:59 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:29:03.004 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: list_dir({"path": "/Users/Mac/工作区/CodeTemp/nanobot"})
+[92m12:29:03 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:29:06.736 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: exec({"command": "find /Users/Mac -name \"nanobot\" -type d 2>/dev/null | head -10"})
+[92m12:29:28 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:29:32.342 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: list_dir({"path": "/Users/Mac/工作区/CodeTemp/nanobot-fork/nanobot"})
+[92m12:29:32 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:29:35.634 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: list_dir({"path": "/Users/Mac/工作区/CodeTemp/nanobot-fork/nanobot/tests"})
+[92m12:29:35 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:29:40.410 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: read_file({"path": "/Users/Mac/工作区/CodeTemp/nanobot-fork/nanobot/tests/test_phone_agent_profile.py"})
+[92m12:29:40 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:29:44.219 | INFO     | nanobot.agent.loop:_run_agent_loop:451 - Tool call: read_file({"path": "/Users/Mac/工作区/CodeTemp/nanobot-fork/nanobot/tests/test_phone_tools.py"})
+[92m12:29:44 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 12:34:06.291 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m12:34:06 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 [botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
 [botpy] ws关闭, 停止接收消息!
-2026-03-28 21:31:54.578 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+2026-04-02 12:34:10.430 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
 [botpy] 最大并发连接数: 1, 启动会话数: 1
 [botpy] 会话启动中...
 [botpy] 启动中...
 [botpy] 重连启动...
 [botpy] 机器人重连成功! 
 [botpy] 心跳维持启动...
-2026-03-28 22:01:54.570 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
-[92m22:01:54 - LiteLLM:INFO[0m: utils.py:3995 - 
+2026-04-02 13:04:10.464 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m13:04:10 - LiteLLM:INFO[0m: utils.py:3995 - 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 
 LiteLLM completion() model= deepseek-chat; provider = deepseek
 [botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
 [botpy] ws关闭, 停止接收消息!
-2026-03-28 22:01:57.659 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+2026-04-02 13:04:13.364 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5464
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 13:34:13.398 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m13:34:13 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 13:34:17.493 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 14:04:17.477 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m14:04:17 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 14:04:20.893 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 14:34:20.919 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m14:34:20 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 14:34:25.355 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 15:04:25.374 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m15:04:25 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 15:04:33.108 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5443
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 15:34:33.092 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m15:34:33 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 15:34:36.695 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 16:04:36.693 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m16:04:36 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 16:04:41.441 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 16:34:41.437 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m16:34:41 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 16:34:46.572 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 17:04:46.555 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m17:04:46 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 17:04:51.959 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5422
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 17:34:51.939 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m17:34:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 17:34:57.025 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 18:04:57.015 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m18:04:57 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 18:05:02.449 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m18:35:02 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 18:35:02.492 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 18:35:05.676 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 19:05:05.728 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m19:05:05 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 19:05:10.254 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5401
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m19:35:10 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 19:35:10.267 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 19:35:13.709 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 20:05:13.732 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m20:05:13 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 20:05:20.591 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 20:35:20.561 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m20:35:20 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 20:35:24.848 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7185
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 21:05:24.856 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:05:24 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 21:05:30.292 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 21:35:30.250 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:35:30 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 21:35:35.077 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 22:05:35.073 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m22:05:35 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 22:05:38.246 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 22:35:38.241 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m22:35:38 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 22:35:41.524 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7164
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 23:05:41.522 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m23:05:41 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 23:05:46.582 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-02 23:35:46.644 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m23:35:46 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-02 23:35:51.215 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m00:05:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 00:05:51.223 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 00:05:54.195 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 00:35:54.204 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m00:35:54 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 00:35:57.481 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7143
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 01:05:57.436 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m01:05:57 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 01:06:00.409 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 01:36:00.411 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m01:36:00 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 01:36:03.384 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 02:06:03.409 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m02:06:03 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 02:06:06.397 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 02:36:06.402 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m02:36:06 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 02:36:09.050 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7121
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 03:06:08.999 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m03:06:09 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 03:06:14.738 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 03:36:14.766 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m03:36:14 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 03:36:17.735 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 04:06:17.704 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m04:06:17 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 04:06:21.919 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 04:36:21.960 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m04:36:21 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 04:36:24.359 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7100
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 05:06:24.329 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m05:06:24 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 05:06:27.554 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 05:36:27.559 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m05:36:27 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 05:36:29.916 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 06:06:29.891 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m06:06:29 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 06:06:32.564 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 06:36:32.493 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m06:36:32 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 06:36:36.318 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7079
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 07:06:36.288 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m07:06:36 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 07:06:38.291 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 07:36:38.254 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m07:36:38 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 07:36:41.032 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m08:06:41 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 08:06:41.009 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 08:06:43.504 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 08:36:43.509 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m08:36:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 08:36:45.737 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7058
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 09:06:45.830 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m09:06:45 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 09:06:49.726 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 09:36:49.780 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m09:36:49 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 09:36:52.351 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 10:06:52.384 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m10:06:52 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 10:06:56.061 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 10:36:56.074 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m10:36:56 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 10:36:59.349 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7038
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 11:06:59.294 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m11:06:59 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 11:07:06.266 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 11:37:06.267 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m11:37:06 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 11:37:09.732 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 12:07:09.771 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m12:07:09 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 12:07:14.641 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 12:37:14.629 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m12:37:14 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 12:37:17.355 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 7017
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 13:07:17.336 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m13:07:17 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 13:07:23.250 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 13:37:23.251 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m13:37:23 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 13:37:26.194 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 14:07:26.231 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m14:07:26 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 14:07:30.635 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 14:37:30.622 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m14:37:30 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 14:37:34.454 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 6995
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m15:07:34 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 15:07:34.487 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 15:07:38.387 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 15:37:38.384 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m15:37:38 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 15:37:41.106 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 16:07:41.128 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m16:07:41 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 16:07:43.802 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[botpy] 关闭, 返回码: 1006, 返回信息: None
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[botpy] 关闭, 返回码: 1006, 返回信息: None
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[botpy] 关闭, 返回码: 1006, 返回信息: None
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[botpy] 关闭, 返回码: 1006, 返回信息: None
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[botpy] 关闭, 返回码: 1006, 返回信息: None
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 16:37:43.831 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m16:37:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 16:37:47.059 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5851
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m17:07:47 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 17:07:47.075 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 17:07:50.006 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 17:37:50.023 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m17:37:50 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 17:37:53.918 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 18:07:53.850 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m18:07:53 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 18:07:58.003 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 18:37:58.000 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m18:37:58 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 18:38:01.343 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5830
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 19:08:01.321 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m19:08:01 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 19:08:05.202 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m19:38:05 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 19:38:05.253 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 19:38:08.379 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 20:08:08.380 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m20:08:08 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 20:08:14.235 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 20:38:14.215 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m20:38:14 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 20:38:17.919 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5808
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 21:08:17.922 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:08:17 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 21:08:20.702 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 21:38:20.714 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:38:20 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 21:38:23.388 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 22:08:23.367 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m22:08:23 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 22:08:27.655 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 22:38:27.687 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m22:38:27 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 22:38:31.338 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5787
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-03 23:08:31.364 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m23:08:31 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 23:08:36.194 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m23:38:36 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 23:38:36.161 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-03 23:38:39.361 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 00:08:39.361 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m00:08:39 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 00:08:43.562 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 00:38:43.560 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m00:38:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 00:38:46.454 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5766
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+[92m01:08:46 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 01:08:46.405 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 01:08:49.370 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 01:38:49.346 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m01:38:49 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 01:38:53.475 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 02:08:53.555 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m02:08:53 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 02:08:56.655 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 02:38:56.608 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m02:38:56 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 02:38:59.231 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5745
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 03:08:59.218 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m03:08:59 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 03:09:03.169 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 03:39:03.148 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m03:39:03 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 03:39:05.457 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 04:09:05.491 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m04:09:05 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 04:09:07.814 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 04:39:07.790 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m04:39:07 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 04:39:10.806 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5724
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 05:09:10.793 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m05:09:10 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 05:09:13.770 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 05:39:13.752 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m05:39:13 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 05:39:17.286 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 06:09:17.316 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m06:09:17 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 06:09:20.657 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 06:39:20.637 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m06:39:20 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 06:39:23.921 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5702
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 07:09:23.914 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m07:09:23 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 07:09:26.370 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 07:39:26.406 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m07:39:26 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 07:39:28.719 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 08:09:28.701 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m08:09:28 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 08:09:34.397 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 08:39:34.432 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m08:39:34 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 08:39:37.781 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5681
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 09:09:37.706 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m09:09:37 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 09:09:40.183 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 09:39:40.135 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m09:39:40 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 09:39:43.854 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 10:09:43.846 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m10:09:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 10:09:48.745 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 10:39:48.771 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m10:39:48 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 10:39:51.684 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5660
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 11:09:51.641 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m11:09:51 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 11:09:57.458 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 11:39:57.494 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m11:39:57 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 11:40:02.200 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 12:10:02.211 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m12:10:02 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 12:10:04.967 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 12:40:04.968 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m12:40:04 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 12:40:08.186 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5639
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 13:10:08.202 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m13:10:08 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 13:10:12.406 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 13:40:12.416 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m13:40:12 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 13:40:15.693 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 14:10:15.741 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m14:10:15 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 14:10:20.031 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 14:40:20.044 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m14:40:20 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 14:40:23.638 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5618
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 15:10:23.686 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m15:10:23 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 15:10:26.146 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 15:40:26.134 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m15:40:26 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 15:40:29.532 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 16:10:29.547 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m16:10:29 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 16:10:31.851 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 16:40:31.832 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m16:40:31 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 16:40:34.457 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5597
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 17:10:34.484 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m17:10:34 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 17:10:38.173 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 17:40:38.193 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m17:40:38 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 17:40:40.329 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 18:10:40.339 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m18:10:40 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 18:10:43.235 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 18:40:43.243 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m18:40:43 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 18:40:46.220 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5576
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 19:10:46.218 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m19:10:46 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 19:10:50.424 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 19:40:50.426 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m19:40:50 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 19:40:53.709 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 20:10:53.589 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m20:10:53 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 20:10:58.714 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 20:40:58.638 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m20:40:58 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 20:41:01.019 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] access_token expires_in 5555
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 21:11:01.009 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:11:01 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 21:11:04.057 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 4009, 返回信息: Session timed out
+[botpy] ws关闭, 停止接收消息!
+[botpy] 最大并发连接数: 1, 启动会话数: 1
+[botpy] 会话启动中...
+[botpy] 启动中...
+[botpy] 重连启动...
+[botpy] 机器人重连成功! 
+[botpy] 心跳维持启动...
+2026-04-04 21:41:04.027 | INFO     | nanobot.heartbeat.service:_tick:152 - Heartbeat: checking for tasks...
+[92m21:41:04 - LiteLLM:INFO[0m: utils.py:3995 - 
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+
+LiteLLM completion() model= deepseek-chat; provider = deepseek
+2026-04-04 21:41:06.380 | INFO     | nanobot.heartbeat.service:_tick:158 - Heartbeat: OK (nothing to report)
+[botpy] 关闭, 返回码: 1006, 返回信息: None
+[botpy] ws关闭, 停止接收消息!
 [botpy] 最大并发连接数: 1, 启动会话数: 1
 [botpy] 会话启动中...
 [botpy] 启动中...

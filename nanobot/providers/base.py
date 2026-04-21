@@ -270,6 +270,7 @@ class LLMProvider(ABC):
         reasoning_effort: object = _SENTINEL,
         tool_choice: str | dict[str, Any] | None = None,
         on_content_delta: Callable[[str], Awaitable[None]] | None = None,
+        allow_image_fallback: bool = True,
     ) -> LLMResponse:
         """Call chat_stream() with retry on transient provider failures."""
         if max_tokens is self._SENTINEL:
@@ -293,7 +294,7 @@ class LLMProvider(ABC):
                 return response
 
             if not self._is_transient_error(response.content):
-                stripped = self._strip_image_content(messages)
+                stripped = self._strip_image_content(messages) if allow_image_fallback else None
                 if stripped is not None:
                     logger.warning("Non-transient LLM error with image content, retrying without images")
                     return await self._safe_chat_stream(**{**kw, "messages": stripped})
@@ -317,6 +318,7 @@ class LLMProvider(ABC):
         temperature: object = _SENTINEL,
         reasoning_effort: object = _SENTINEL,
         tool_choice: str | dict[str, Any] | None = None,
+        allow_image_fallback: bool = True,
     ) -> LLMResponse:
         """Call chat() with retry on transient provider failures.
 
@@ -344,7 +346,7 @@ class LLMProvider(ABC):
                 return response
 
             if not self._is_transient_error(response.content):
-                stripped = self._strip_image_content(messages)
+                stripped = self._strip_image_content(messages) if allow_image_fallback else None
                 if stripped is not None:
                     logger.warning("Non-transient LLM error with image content, retrying without images")
                     return await self._safe_chat(**{**kw, "messages": stripped})

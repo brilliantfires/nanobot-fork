@@ -174,14 +174,18 @@ class TestSubagentCancellation:
         assert await mgr.cancel_by_session("nonexistent") == 0
 
     @pytest.mark.asyncio
-    async def test_subagent_preserves_reasoning_fields_in_tool_turn(self, monkeypatch, tmp_path):
+    async def test_subagent_rebuilds_round_messages_from_task_and_tool_state(self, monkeypatch, tmp_path):
         from nanobot.agent.subagent import SubagentManager
+        from nanobot.agent.subagent_profiles import SubagentProfile
+        from nanobot.agent.tools.base import Tool
         from nanobot.bus.queue import MessageBus
         from nanobot.providers.base import LLMResponse, ToolCallRequest
 
         bus = MessageBus()
         provider = MagicMock()
         provider.get_default_model.return_value = "test-model"
+        phone_provider = MagicMock()
+        phone_provider.get_default_model.return_value = "phone-model"
 
         captured_second_call: list[dict] = []
 
@@ -191,27 +195,64 @@ class TestSubagentCancellation:
             call_count["n"] += 1
             if call_count["n"] == 1:
                 return LLMResponse(
-                    content="thinking",
+                    content="先看一下目录",
                     tool_calls=[ToolCallRequest(id="call_1", name="list_dir", arguments={})],
                     reasoning_content="hidden reasoning",
                     thinking_blocks=[{"type": "thinking", "thinking": "step"}],
                 )
             captured_second_call[:] = messages
             return LLMResponse(content="done", tool_calls=[])
-        provider.chat_with_retry = scripted_chat_with_retry
+        provider.chat_with_retry = AsyncMock(side_effect=AssertionError("main provider should not be used"))
+        phone_provider.chat_with_retry = scripted_chat_with_retry
         mgr = SubagentManager(provider=provider, workspace=tmp_path, bus=bus)
+
+        class _FakePhoneTool(Tool):
+            """最小 phone tool，用于验证 profile 分发。"""
+
+            @property
+            def name(self) -> str:
+                return "phone_screenshot"
+
+            @property
+            def description(self) -> str:
+                return "fake phone screenshot"
+
+            @property
+            def parameters(self) -> dict:
+                return {"type": "object", "properties": {}}
+
+            async def execute(self, **kwargs):
+                """Return a deterministic fake tool result."""
+                return "tool result"
+
+        mgr.register_profile(
+            SubagentProfile(
+                name="phone",
+                build_tools=lambda: [_FakePhoneTool()],
+                system_prompt="phone prompt",
+                provider=phone_provider,
+                model="phone-model",
+                max_iterations=3,
+            )
+        )
 
         async def fake_execute(self, name, arguments):
             return "tool result"
 
         monkeypatch.setattr("nanobot.agent.tools.registry.ToolRegistry.execute", fake_execute)
 
-        await mgr._run_subagent("sub-1", "do task", "label", {"channel": "test", "chat_id": "c1"})
+        await mgr._run_subagent(
+            "sub-1",
+            "do task",
+            "label",
+            {"channel": "test", "chat_id": "c1"},
+            profile_name="phone",
+        )
 
-        assistant_messages = [
-            msg for msg in captured_second_call
-            if msg.get("role") == "assistant" and msg.get("tool_calls")
-        ]
-        assert len(assistant_messages) == 1
-        assert assistant_messages[0]["reasoning_content"] == "hidden reasoning"
-        assert assistant_messages[0]["thinking_blocks"] == [{"type": "thinking", "thinking": "step"}]
+        assert len(captured_second_call) == 2
+        assert captured_second_call[0]["role"] == "system"
+        assert captured_second_call[0]["content"] == "phone prompt"
+        assert captured_second_call[1]["role"] == "user"
+        assert "do task" in captured_second_call[1]["content"]
+        assert "tool result" in captured_second_call[1]["content"]
+        phone_provider.chat_with_retry.assert_awaited()
