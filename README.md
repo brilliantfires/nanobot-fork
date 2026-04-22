@@ -1,47 +1,119 @@
 <div align="center">
-  <img src="nanobot_logo.png" alt="nanobot" width="500">
-  <h1>nanobot：超轻量个人 AI 助手</h1>
+  <h1>nanobot fork：PhoneAgent 与 Specialist Subagent 实验分支</h1>
   <p>
-    <a href="https://pypi.org/project/nanobot-ai/"><img src="https://img.shields.io/pypi/v/nanobot-ai" alt="PyPI"></a>
-    <a href="https://pepy.tech/project/nanobot-ai"><img src="https://static.pepy.tech/badge/nanobot-ai" alt="Downloads"></a>
     <img src="https://img.shields.io/badge/python-≥3.11-blue" alt="Python">
     <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
-    <a href="./COMMUNICATION.md"><img src="https://img.shields.io/badge/Feishu-Group-E9DBFC?style=flat&logo=feishu&logoColor=white" alt="Feishu"></a>
-    <a href="./COMMUNICATION.md"><img src="https://img.shields.io/badge/WeChat-Group-C5EAB4?style=flat&logo=wechat&logoColor=white" alt="WeChat"></a>
-    <a href="https://discord.gg/MnCvHqpUGB"><img src="https://img.shields.io/badge/Discord-Community-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord"></a>
+    <a href="https://github.com/HKUDS/nanobot"><img src="https://img.shields.io/badge/upstream-HKUDS%2Fnanobot-lightgrey" alt="Upstream"></a>
   </p>
 </div>
 
-🐈 **nanobot** 是一个受 [OpenClaw](https://github.com/openclaw/openclaw) 启发的 **超轻量** 个人 AI 助手。
+本项目基于开源项目 [HKUDS/nanobot](https://github.com/HKUDS/nanobot) 二次开发，继续沿用其轻量 agent、聊天通道、工具调用、provider 接入、长期记忆和后台任务能力，同时重点扩展 **PhoneAgent**、手机操作经验记忆，以及可演进为更多领域 specialist agent 的 **SubagentProfile** 架构。
 
-⚡️ 以比 OpenClaw **少 99% 的代码行数** 提供核心 agent 功能。
+如果说上游 nanobot 是一个超轻量个人 AI 助手基座，那么这个分支更关注一个问题：主 agent 如何把真实环境里的复杂任务，委托给一个有专用模型、专用工具、专用 prompt 和专用记忆的领域子 agent 来完成。
 
-📏 实时行数统计：随时运行 `bash core_agent_lines.sh` 验证。
+## 项目定位
 
-## nanobot 的核心特性
+这个 fork 当前聚焦三件事：
 
-🪶 **超轻量**：OpenClaw 的极简实现，体积缩小 99%，速度显著更快。
+- **真实手机执行**：通过 `phone_agent` 工具把手机 GUI 操作委托给专用 phone subagent，在真实连接的 Android 设备上完成打开应用、点击、滑动、输入、返回、截图观察等多步任务。
+- **经验可沉淀**：PhoneAgent 可以把成功的任务轨迹压缩成结构化经验，并在相似任务开始前检索复用，减少重复探索。
+- **Specialist agent 架构**：`SubagentProfile` 把子 agent 的工具集、system prompt、模型、每轮观察、任务前准备和任务后收尾解耦。PhoneAgent 是第一个 specialist，后续可以扩展到浏览器、办公、数据分析、客服、设备运维等垂直领域。
 
-🔬 **面向研究**：代码干净、可读，容易理解、修改与扩展，非常适合研究使用。
+## 与上游 nanobot 的关系
 
-⚡️ **极速启动**：更小的体积意味着更快的启动、更低的资源占用，以及更快的迭代速度。
+本仓库不是从零开始的新项目，而是基于上游 nanobot 的 fork。上游 nanobot 受 [OpenClaw](https://github.com/openclaw/openclaw) 启发，目标是用尽可能少的代码提供一个可运行、可读、可扩展的个人 AI assistant 框架。
 
-💎 **易于使用**：一键部署即可上手。
+本分支保留并继续受益于上游的基础能力：
+
+- 多 provider LLM 接入，包括 OpenRouter、OpenAI、Anthropic、Gemini、DeepSeek、Ollama、自定义 OpenAI-compatible endpoint 等。
+- 多聊天通道，包括 Telegram、Discord、WhatsApp、Feishu、DingTalk、Slack、Email、QQ、WeCom、Matrix 等。
+- 文件、Shell、网页搜索、网页抓取、MCP、定时任务、Heartbeat、长期记忆和 session 管理。
+- 小型、清晰的 Python 代码结构，适合快速实验和二次开发。
+
+在此基础上，本分支新增或强化了手机执行、phone specialist profile、手机经验记忆、subagent profile 生命周期钩子等能力。许可仍为 MIT；发布、分发或二次开发时请保留原项目的版权与许可证声明。
+
+## 新增能力概览
+
+### PhoneAgent
+
+`PhoneAgentTool` 是主 agent 暴露给用户的高层入口。当用户提出真实手机操作任务时，主 agent 会调用 `phone_agent`，由后台 phone subagent 继续执行，并在完成后把结果回传到原会话。
+
+PhoneAgent 当前支持：
+
+- 每轮自动截图，把最新屏幕状态作为多模态输入交给 phone profile。
+- `phone_launch`、`phone_tap`、`phone_double_tap`、`phone_long_press`、`phone_swipe`、`phone_type`、`phone_back`、`phone_home`、`phone_wait` 等手机工具。
+- 基于 ADB 的 Android 真机或模拟器操作，支持本地 `adb`、自定义 `platform-tools` 路径，以及仓库内置 platform-tools 探测。
+- 独立的 phone provider、模型、temperature、max tokens、max steps 配置，使手机 GUI 任务可以使用更适合视觉和工具调用的模型。
+- 遇到登录、验证码、权限、支付确认、设备异常或工具错误时，要求 phone subagent 明确报告真实阻塞点。
+
+### Phone Experience Memory
+
+PhoneAgent 的经验记忆是专门面向手机 GUI 任务的轻量结构化记忆系统。它会在任务开始前抽取任务签名，在任务结束后总结可复用经验，并根据用户后续反馈修正经验质量。
+
+当前机制包括：
+
+- 任务签名抽取：`task_intent`、`app_name`、`operation_mode`。
+- 相似经验检索：基于 embedding 和 Chroma 存储检索历史成功经验。
+- 执行轨迹总结：把最近工具调用、截图观察和最终结果压缩成可复用 guidance。
+- 反馈窗口：用户在任务完成后的短期反馈可以用于强化或降低某条经验的可信度。
+
+### SubagentProfile
+
+`SubagentProfile` 是本分支后续扩展 specialist agent 的核心抽象。一个 profile 可以定义：
+
+- 每次 spawn 时构建的专属工具集。
+- 专属 system prompt。
+- 专属 provider 和模型。
+- 最大迭代次数和 loop 模式。
+- 任务开始前的准备逻辑，例如抽取任务签名、检索经验。
+- 每轮模型请求前的观察逻辑，例如自动截图。
+- 自定义 round message 构建逻辑，例如把截图、最近动作、经验块合并进多模态输入。
+- 任务结束后的收尾逻辑，例如经验总结和持久化。
+
+PhoneAgent 只是第一个落地的 specialist。未来可以按同样模式扩展：
+
+- `browser` profile：专门处理浏览器和网页自动化。
+- `office` profile：专门处理文档、表格、PPT。
+- `data` profile：专门处理数据分析、图表和报表。
+- `support` profile：专门处理客服工单、知识库检索和标准作业流程。
+- `ops` profile：专门处理服务巡检、日志分析和运维操作。
 
 ## 🏗️ 架构
 
-<p align="center">
-  <img src="nanobot_arch.png" alt="nanobot architecture" width="800">
-</p>
+本分支的关键路径可以理解为：
+
+```text
+User / Chat Channel
+        |
+        v
+Main AgentLoop
+        |
+        | phone_agent(task)
+        v
+SubagentManager
+        |
+        | profile="phone"
+        v
+Phone SubagentProfile
+        |
+        | screenshot -> VLM reasoning -> phone tool call
+        v
+Android device via ADB
+        |
+        | finalize
+        v
+Phone Experience Memory
+```
 
 ## 目录
 
-- [更新动态](#-更新动态)
-- [核心特性](#nanobot-的核心特性)
+- [项目定位](#项目定位)
+- [与上游 nanobot 的关系](#与上游-nanobot-的关系)
+- [新增能力概览](#新增能力概览)
 - [架构](#️-架构)
-- [功能特性](#-功能特性)
 - [安装](#-安装)
 - [快速开始](#-快速开始)
+- [PhoneAgent 配置](#phoneagent-配置)
 - [聊天应用](#-聊天应用)
 - [Agent 社交网络](#-agent-社交网络)
 - [配置](#️-配置)
@@ -51,38 +123,21 @@
 - [Linux 服务](#-linux-服务)
 - [项目结构](#-项目结构)
 - [贡献与路线图](#-贡献与路线图)
-- [Star 历史](#-star-历史)
-
-## ✨ 功能特性
-
-<table align="center">
-  <tr align="center">
-    <th><p align="center">📈 7x24 实时市场分析</p></th>
-    <th><p align="center">🚀 全栈软件工程师</p></th>
-    <th><p align="center">📅 智能日程管理</p></th>
-    <th><p align="center">📚 个人知识助理</p></th>
-  </tr>
-  <tr>
-    <td align="center"><p align="center"><img src="case/search.gif" width="180" height="400"></p></td>
-    <td align="center"><p align="center"><img src="case/code.gif" width="180" height="400"></p></td>
-    <td align="center"><p align="center"><img src="case/scedule.gif" width="180" height="400"></p></td>
-    <td align="center"><p align="center"><img src="case/memory.gif" width="180" height="400"></p></td>
-  </tr>
-  <tr>
-    <td align="center">发现 • 洞察 • 趋势</td>
-    <td align="center">开发 • 部署 • 扩展</td>
-    <td align="center">安排 • 自动化 • 组织</td>
-    <td align="center">学习 • 记忆 • 推理</td>
-  </tr>
-</table>
+- [许可证](#许可证)
 
 ## 📦 安装
 
-**从源码安装**（最新特性，推荐开发者使用）
+**从源码安装**（推荐；包含本分支的 PhoneAgent 与 specialist profile 功能）
 
 ```bash
-git clone https://github.com/HKUDS/nanobot.git
-cd nanobot
+git clone https://github.com/brilliantfires/nanobot-fork.git
+cd nanobot-fork
+pip install -e .
+```
+
+如果你是在当前仓库中开发，也可以直接运行：
+
+```bash
 pip install -e .
 ```
 
@@ -97,6 +152,8 @@ uv tool install nanobot-ai
 ```bash
 pip install nanobot-ai
 ```
+
+> PyPI 上的 `nanobot-ai` 是上游发布包，可能不包含本 fork 中正在开发的 PhoneAgent、phone experience memory 和 specialist profile 扩展。要使用这些功能，请从本仓库源码安装。
 
 ### 升级到最新版本
 
@@ -175,6 +232,77 @@ nanobot agent
 ```
 
 就这些！2 分钟内即可拥有一个可工作的 AI 助手。
+
+## PhoneAgent 配置
+
+PhoneAgent 默认配置位于 `tools.phoneAgent`。如果你只想先使用普通聊天助手，可以把它关闭：
+
+```json
+{
+  "tools": {
+    "phoneAgent": {
+      "enable": false
+    }
+  }
+}
+```
+
+要启用真实手机操作，需要准备 Android 设备或模拟器，并确保 ADB 可用。最小配置示例：
+
+```json
+{
+  "tools": {
+    "phoneAgent": {
+      "enable": true,
+      "provider": "custom",
+      "baseUrl": "https://api.siliconflow.cn/v1",
+      "apiKey": "YOUR_PHONE_MODEL_API_KEY",
+      "model": "Qwen/Qwen3.5-397B-A17B",
+      "deviceType": "adb",
+      "maxSteps": 50,
+      "lang": "cn"
+    }
+  }
+}
+```
+
+如果你的机器上没有全局 `adb`，可以指定路径：
+
+```json
+{
+  "tools": {
+    "phoneAgent": {
+      "adbPath": "/absolute/path/to/adb",
+      "platformToolsDir": "/absolute/path/to/platform-tools"
+    }
+  }
+}
+```
+
+手机经验记忆默认关闭。开启后，PhoneAgent 会在成功任务结束后总结结构化经验，并在相似任务中检索复用：
+
+```json
+{
+  "tools": {
+    "phoneAgent": {
+      "experienceMemory": {
+        "enable": true,
+        "embeddingModel": "text-embedding-3-small",
+        "topK": 3,
+        "minScore": 0.55
+      }
+    }
+  }
+}
+```
+
+典型使用方式：
+
+```text
+帮我打开微信，给张三发消息说我十分钟后到。
+```
+
+主 agent 会把这个请求委托给 `phone_agent`，phone subagent 会在后台持续观察手机截图、调用手机工具，并在完成或遇到真实阻塞时把结果回传到当前会话。
 
 ## 💬 聊天应用
 
@@ -1431,27 +1559,32 @@ journalctl --user -u nanobot-gateway -f        # 持续跟踪日志
 
 ```
 nanobot/
-├── agent/          # 🧠 核心 agent 逻辑
-│   ├── loop.py     #    Agent 循环（LLM ↔ 工具执行）
-│   ├── context.py  #    Prompt 构建器
-│   ├── memory.py   #    持久化记忆
-│   ├── skills.py   #    技能加载器
-│   ├── subagent.py #    后台任务执行
-│   └── tools/      #    内建工具（含 spawn）
-├── skills/         # 🎯 内建技能（github、weather、tmux...）
-├── channels/       # 📱 聊天通道集成（支持插件）
-├── bus/            # 🚌 消息路由
-├── cron/           # ⏰ 定时任务
-├── heartbeat/      # 💓 主动唤醒
-├── providers/      # 🤖 LLM providers（OpenRouter 等）
-├── session/        # 💬 会话管理
-├── config/         # ⚙️ 配置
-└── cli/            # 🖥️ 命令入口
+├── agent/                       # 核心 agent 逻辑
+│   ├── loop.py                  # Agent 循环、工具注册、phone profile 注册
+│   ├── context.py               # Prompt 构建器
+│   ├── memory.py                # 通用长期记忆
+│   ├── phone_experience.py      # PhoneAgent 结构化经验记忆
+│   ├── phone_prompt.py          # PhoneAgent system prompt 与 round message
+│   ├── subagent.py              # 后台子 agent 生命周期管理
+│   ├── subagent_profiles.py     # Specialist profile 抽象
+│   └── tools/
+│       ├── phone_agent.py       # 主 agent 暴露的 phone_agent 高层入口
+│       └── phone/               # ADB 手机工具集
+├── templates/                   # System prompt 与记忆模板
+├── skills/                      # 内建技能
+├── channels/                    # 聊天通道集成
+├── bus/                         # 消息路由
+├── cron/                        # 定时任务
+├── heartbeat/                   # 主动唤醒
+├── providers/                   # LLM providers
+├── session/                     # 会话管理
+├── config/                      # 配置 schema 与加载
+└── cli/                         # 命令入口
 ```
 
 ## 🤝 贡献与路线图
 
-欢迎 PR！这个代码库被刻意保持得很小、很易读。🤗
+欢迎 PR。这个分支希望继续保持上游 nanobot 的轻量和可读，同时把 specialist agent 的扩展路径打磨清楚。
 
 ### 分支策略
 
@@ -1460,23 +1593,25 @@ nanobot/
 | `main`    | 稳定发布 —— bug 修复和小改进   |
 | `nightly` | 实验功能 —— 新功能和破坏性变更 |
 
-**不确定该投哪个分支？** 详情见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
+### 当前路线图
 
-**路线图** —— 任选一项，欢迎 [open a PR](https://github.com/HKUDS/nanobot/pulls)！
+- [ ] 完善 PhoneAgent 的 Android ADB 稳定性、输入法体验和设备诊断。
+- [ ] 强化 phone experience memory 的去重、反馈更新和跨会话复用。
+- [ ] 抽象更多 `SubagentProfile` 示例，让 specialist agent 可以按领域快速接入。
+- [ ] 为 phone profile 增加更完整的端到端测试和真实设备 smoke test 指南。
+- [ ] 梳理上游同步策略，明确哪些基础能力继续跟随 nanobot，哪些能力在本分支独立演进。
 
-- [ ] **多模态** —— 看见和听见（图片、语音、视频）
-- [ ] **长期记忆** —— 永不忘记重要上下文
-- [ ] **更强推理** —— 多步规划与反思
-- [ ] **更多集成** —— 日历等更多能力
-- [ ] **自我改进** —— 从反馈和错误中学习
+## 许可证
 
-### 贡献者
+本项目基于 MIT 许可证开源，并基于上游 [HKUDS/nanobot](https://github.com/HKUDS/nanobot) 二次开发。使用、修改、分发本项目时，请遵守 MIT License，并保留上游项目及本项目的版权与许可证声明。
+
+### 上游贡献者
 
 <a href="https://github.com/HKUDS/nanobot/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=HKUDS/nanobot&max=100&columns=12&updated=20260210" alt="Contributors" />
 </a>
 
-## ⭐ Star 历史
+## 上游 Star 历史
 
 <div align="center">
   <a href="https://star-history.com/#HKUDS/nanobot&Date">
